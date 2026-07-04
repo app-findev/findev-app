@@ -44,7 +44,13 @@ export default function Welcome({ navigation }) {
         </TouchableOpacity>
 
         <Text style={styles.loginRow}>
-          Already have an account? <Text style={styles.loginLink}>Log in</Text>
+          Already have an account?{" "}
+          <Text
+            style={styles.loginLink}
+            onPress={() => navigation.navigate("Login")}
+          >
+            Log in
+          </Text>
         </Text>
       </View>
     </SafeAreaView>

@@ -5,6 +5,7 @@ import CreateAccount from "./src/screens/CreateAccount";
 import YourName from "./src/screens/YourName";
 import Goals from "./src/screens/Goals";
 import Budget from "./src/screens/Budget";
+import Login from "./src/screens/Login";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Screen name="YourName" component={YourName} />
         <Stack.Screen name="Goals" component={Goals} />
         <Stack.Screen name="Budget" component={Budget} />
+        <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator>
     </NavigationContainer>
   );
