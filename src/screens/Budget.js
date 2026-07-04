@@ -83,7 +83,7 @@ export default function Budget({ navigation }) {
           onValueChange={setAmount}
           minimumTrackTintColor={colors.darkGreen}
           maximumTrackTintColor={colors.track}
-          thumbTintColor="#ffffff"
+          thumbTintColor={colors.green}
         />
 
         <View style={styles.rangeRow}>
