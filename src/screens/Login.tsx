@@ -1,17 +1,13 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import Svg, { Path, Circle } from "react-native-svg";
-import TrendIcon from "../components/TrendIcon";
-import { colors } from "../theme";
+import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Svg, { Path, Circle } from 'react-native-svg';
+import TrendIcon from '../components/TrendIcon';
+import { colors } from '../theme';
+import type { RootStackParamList } from '../navigation/types';
 
-function EyeIcon({ open }) {
+function EyeIcon({ open }: { open: boolean }) {
   return open ? (
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <Path
@@ -34,9 +30,11 @@ function EyeIcon({ open }) {
   );
 }
 
-export default function Login({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+
+export default function Login({ navigation }: Props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -73,10 +71,7 @@ export default function Login({ navigation }) {
             secureTextEntry={!showPassword}
             style={[styles.input, { paddingRight: 44 }]}
           />
-          <TouchableOpacity
-            style={styles.eyeButton}
-            onPress={() => setShowPassword((v) => !v)}
-          >
+          <TouchableOpacity style={styles.eyeButton} onPress={() => setShowPassword((v) => !v)}>
             <EyeIcon open={showPassword} />
           </TouchableOpacity>
         </View>
@@ -89,15 +84,12 @@ export default function Login({ navigation }) {
       <View style={{ flex: 1 }} />
 
       <TouchableOpacity style={styles.button} onPress={() => {}}>
-        <Text style={styles.buttonText}>Log in  →</Text>
+        <Text style={styles.buttonText}>Log in →</Text>
       </TouchableOpacity>
 
       <Text style={styles.signupRow}>
-        Don&apos;t have an account?{" "}
-        <Text
-          style={styles.signupLink}
-          onPress={() => navigation.navigate("CreateAccount")}
-        >
+        Don&apos;t have an account?{' '}
+        <Text style={styles.signupLink} onPress={() => navigation.navigate('CreateAccount')}>
           Sign up
         </Text>
       </Text>
@@ -114,8 +106,8 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   brandRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
     marginBottom: 24,
   },
@@ -124,17 +116,17 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 8,
     backgroundColor: colors.darkGreen,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   brandName: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.darkGreen,
   },
   heading: {
     fontSize: 26,
-    fontWeight: "800",
+    fontWeight: '800',
     color: colors.darkGreen,
   },
   subtitle: {
@@ -147,11 +139,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    color: "#5c6b52",
+    color: '#5c6b52',
     marginBottom: 8,
   },
   input: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 12,
@@ -162,44 +154,44 @@ const styles = StyleSheet.create({
     backgroundColor: colors.inputBg,
   },
   passwordWrapper: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   eyeButton: {
-    position: "absolute",
+    position: 'absolute',
     right: 14,
-    height: "100%",
-    justifyContent: "center",
+    height: '100%',
+    justifyContent: 'center',
   },
   forgotButton: {
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
     marginTop: 10,
   },
   forgotText: {
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.darkGreen,
   },
   button: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 16,
     borderRadius: 14,
     backgroundColor: colors.green,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: colors.darkGreen,
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   signupRow: {
     marginTop: 16,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 14,
-    color: "#5c6b52",
+    color: '#5c6b52',
   },
   signupLink: {
     color: colors.darkGreen,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });

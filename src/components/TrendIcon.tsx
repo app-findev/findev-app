@@ -1,6 +1,11 @@
-import Svg, { Path } from "react-native-svg";
+import Svg, { Path } from 'react-native-svg';
 
-export default function TrendIcon({ size = 18, color = "#8fe05a" }) {
+type TrendIconProps = {
+  size?: number;
+  color?: string;
+};
+
+export default function TrendIcon({ size = 18, color = '#8fe05a' }: TrendIconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
