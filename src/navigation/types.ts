@@ -5,6 +5,16 @@ export type RootStackParamList = {
   Goals: undefined;
   Budget: undefined;
   Login: undefined;
+  MainTabs: undefined;
+  AddExpense: undefined;
+  EditExpense: { expenseId: string };
+};
+
+export type MainTabsParamList = {
+  HomeTab: undefined;
+  InsightsTab: undefined;
+  WalletTab: undefined;
+  ProfileTab: undefined;
 };
 
 declare global {

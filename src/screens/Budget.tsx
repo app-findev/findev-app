@@ -122,7 +122,12 @@ export default function Budget({ navigation }: Props) {
 
       <View style={{ flex: 1 }} />
 
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>
+          navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] })
+        }
+      >
         <Text style={styles.buttonText}>{t.budget.finishSetup} →</Text>
       </TouchableOpacity>
     </SafeAreaView>
