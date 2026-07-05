@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Svg, { Path, Circle } from 'react-native-svg';
+import LanguageToggle from '../components/LanguageToggle';
+import { useLanguage } from '../i18n/LanguageContext';
 import { colors } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 
@@ -60,6 +62,7 @@ function CheckIcon() {
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateAccount'>;
 
 export default function CreateAccount({ navigation }: Props) {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -74,8 +77,8 @@ export default function CreateAccount({ navigation }: Props) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
-        <Text style={styles.stepLabel}>Step 1 of 4</Text>
-        <View style={{ width: 36 }} />
+        <Text style={styles.stepLabel}>{t.createAccount.step}</Text>
+        <LanguageToggle />
       </View>
 
       <View style={styles.progressRow}>
@@ -85,11 +88,11 @@ export default function CreateAccount({ navigation }: Props) {
         <View style={styles.progressSegment} />
       </View>
 
-      <Text style={styles.heading}>Create your account</Text>
-      <Text style={styles.subtitle}>Start tracking in under a minute.</Text>
+      <Text style={styles.heading}>{t.createAccount.heading}</Text>
+      <Text style={styles.subtitle}>{t.createAccount.subtitle}</Text>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>{t.createAccount.email}</Text>
         <TextInput
           placeholder="alex@example.com"
           placeholderTextColor={colors.mutedLight}
@@ -102,7 +105,7 @@ export default function CreateAccount({ navigation }: Props) {
       </View>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.label}>Password</Text>
+        <Text style={styles.label}>{t.createAccount.password}</Text>
         <View style={styles.passwordWrapper}>
           <TextInput
             value={password}
@@ -120,7 +123,8 @@ export default function CreateAccount({ navigation }: Props) {
             {passwordValid && <CheckIcon />}
           </View>
           <Text style={[styles.checkText, passwordValid && styles.checkTextActive]}>
-            At least 8 characters{passwordValid ? ' — looks good' : ''}
+            {t.createAccount.passwordHint}
+            {passwordValid ? t.createAccount.passwordHintValid : ''}
           </Text>
         </View>
       </View>
@@ -132,12 +136,14 @@ export default function CreateAccount({ navigation }: Props) {
         disabled={!canContinue}
         onPress={() => navigation.navigate('YourName')}
       >
-        <Text style={styles.buttonText}>Continue →</Text>
+        <Text style={styles.buttonText}>{t.createAccount.continue} →</Text>
       </TouchableOpacity>
 
       <Text style={styles.footer}>
-        By continuing you agree to our <Text style={styles.footerLink}>Terms</Text> &{' '}
-        <Text style={styles.footerLink}>Privacy Policy</Text>.
+        {t.createAccount.agreement}{' '}
+        <Text style={styles.footerLink}>{t.createAccount.terms}</Text>{' '}
+        {t.createAccount.and}{' '}
+        <Text style={styles.footerLink}>{t.createAccount.privacyPolicy}</Text>.
       </Text>
     </SafeAreaView>
   );

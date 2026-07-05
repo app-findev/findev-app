@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Svg, { Path, Circle } from 'react-native-svg';
+import LanguageToggle from '../components/LanguageToggle';
+import { useLanguage } from '../i18n/LanguageContext';
 import { colors } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 
@@ -33,6 +35,7 @@ function InfoIcon() {
 type Props = NativeStackScreenProps<RootStackParamList, 'YourName'>;
 
 export default function YourName({ navigation }: Props) {
+  const { t } = useLanguage();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
@@ -44,8 +47,8 @@ export default function YourName({ navigation }: Props) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
-        <Text style={styles.stepLabel}>Step 2 of 4</Text>
-        <View style={{ width: 36 }} />
+        <Text style={styles.stepLabel}>{t.yourName.step}</Text>
+        <LanguageToggle />
       </View>
 
       <View style={styles.progressRow}>
@@ -55,11 +58,11 @@ export default function YourName({ navigation }: Props) {
         <View style={styles.progressSegment} />
       </View>
 
-      <Text style={styles.heading}>What should we call you?</Text>
-      <Text style={styles.subtitle}>We&apos;ll use this to personalize your space.</Text>
+      <Text style={styles.heading}>{t.yourName.heading}</Text>
+      <Text style={styles.subtitle}>{t.yourName.subtitle}</Text>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.label}>First name</Text>
+        <Text style={styles.label}>{t.yourName.firstName}</Text>
         <TextInput
           placeholder="Alex"
           placeholderTextColor={colors.mutedLight}
@@ -70,7 +73,7 @@ export default function YourName({ navigation }: Props) {
       </View>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.label}>Last name</Text>
+        <Text style={styles.label}>{t.yourName.lastName}</Text>
         <TextInput
           placeholder="Rivera"
           placeholderTextColor={colors.mutedLight}
@@ -82,7 +85,7 @@ export default function YourName({ navigation }: Props) {
 
       <View style={styles.infoBox}>
         <InfoIcon />
-        <Text style={styles.infoText}>Your name stays private. We never share it with anyone.</Text>
+        <Text style={styles.infoText}>{t.yourName.infoText}</Text>
       </View>
 
       <View style={{ flex: 1 }} />
@@ -92,7 +95,7 @@ export default function YourName({ navigation }: Props) {
         disabled={!canContinue}
         onPress={() => navigation.navigate('Goals')}
       >
-        <Text style={styles.buttonText}>Continue →</Text>
+        <Text style={styles.buttonText}>{t.yourName.continue} →</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

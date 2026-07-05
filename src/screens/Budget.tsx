@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Slider from '@react-native-community/slider';
 import Svg, { Path, Circle } from 'react-native-svg';
+import LanguageToggle from '../components/LanguageToggle';
+import { useLanguage } from '../i18n/LanguageContext';
 import { colors } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 
@@ -34,13 +36,15 @@ function TargetIcon() {
   );
 }
 
-function formatCurrency(value: number): string {
-  return Math.round(value).toLocaleString('en-US');
+function formatCurrency(value: number, locale: string): string {
+  return Math.round(value).toLocaleString(locale);
 }
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Budget'>;
 
 export default function Budget({ navigation }: Props) {
+  const { t, language } = useLanguage();
+  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
   const [amount, setAmount] = useState(2400);
 
   return (
@@ -49,8 +53,8 @@ export default function Budget({ navigation }: Props) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
-        <Text style={styles.stepLabel}>Step 4 of 4</Text>
-        <View style={{ width: 36 }} />
+        <Text style={styles.stepLabel}>{t.budget.step}</Text>
+        <LanguageToggle />
       </View>
 
       <View style={styles.progressRow}>
@@ -60,14 +64,14 @@ export default function Budget({ navigation }: Props) {
         <View style={[styles.progressSegment, styles.progressActive]} />
       </View>
 
-      <Text style={styles.heading}>Set your monthly budget</Text>
-      <Text style={styles.subtitle}>You can fine-tune this anytime.</Text>
+      <Text style={styles.heading}>{t.budget.heading}</Text>
+      <Text style={styles.subtitle}>{t.budget.subtitle}</Text>
 
       <View style={styles.amountBlock}>
-        <Text style={styles.amountLabel}>Monthly spending limit</Text>
+        <Text style={styles.amountLabel}>{t.budget.monthlyLimit}</Text>
         <View style={styles.amountRow}>
           <Text style={styles.amountSign}>$</Text>
-          <Text style={styles.amountValue}>{formatCurrency(amount)}</Text>
+          <Text style={styles.amountValue}>{formatCurrency(amount, locale)}</Text>
         </View>
 
         <Slider
@@ -83,13 +87,13 @@ export default function Budget({ navigation }: Props) {
         />
 
         <View style={styles.rangeRow}>
-          <Text style={styles.rangeText}>${MIN.toLocaleString('en-US')}</Text>
-          <Text style={styles.rangeText}>${MAX.toLocaleString('en-US')}</Text>
+          <Text style={styles.rangeText}>${MIN.toLocaleString(locale)}</Text>
+          <Text style={styles.rangeText}>${MAX.toLocaleString(locale)}</Text>
         </View>
       </View>
 
       <View style={styles.splitBox}>
-        <Text style={styles.splitLabel}>Suggested split</Text>
+        <Text style={styles.splitLabel}>{t.budget.suggestedSplit}</Text>
         <View style={styles.splitBar}>
           <View style={[styles.splitSegment, { flex: 45, backgroundColor: colors.darkGreen }]} />
           <View style={[styles.splitSegment, { flex: 35, backgroundColor: colors.green }]} />
@@ -98,30 +102,28 @@ export default function Budget({ navigation }: Props) {
         <View style={styles.legendRow}>
           <View style={styles.legendItem}>
             <View style={[styles.legendDot, { backgroundColor: colors.darkGreen }]} />
-            <Text style={styles.legendText}>Essentials</Text>
+            <Text style={styles.legendText}>{t.budget.essentials}</Text>
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.legendDot, { backgroundColor: colors.green }]} />
-            <Text style={styles.legendText}>Lifestyle</Text>
+            <Text style={styles.legendText}>{t.budget.lifestyle}</Text>
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.legendDot, { backgroundColor: '#0d1f04' }]} />
-            <Text style={styles.legendText}>Savings</Text>
+            <Text style={styles.legendText}>{t.budget.savings}</Text>
           </View>
         </View>
       </View>
 
       <View style={styles.noteRow}>
         <TargetIcon />
-        <Text style={styles.noteText}>
-          Você acompanha esta meta na tela inicial, a cada despesa do mês.
-        </Text>
+        <Text style={styles.noteText}>{t.budget.note}</Text>
       </View>
 
       <View style={{ flex: 1 }} />
 
       <TouchableOpacity style={styles.button} onPress={() => {}}>
-        <Text style={styles.buttonText}>Finish setup →</Text>
+        <Text style={styles.buttonText}>{t.budget.finishSetup} →</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

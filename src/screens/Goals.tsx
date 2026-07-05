@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Svg, { Path, Circle, Rect, Line } from 'react-native-svg';
+import LanguageToggle from '../components/LanguageToggle';
+import { useLanguage } from '../i18n/LanguageContext';
 import { colors } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 
@@ -131,27 +133,35 @@ function ClockIcon({ color }: IconProps) {
   );
 }
 
+type GoalId =
+  | 'savings'
+  | 'debt'
+  | 'spending'
+  | 'investing'
+  | 'subscriptions'
+  | 'budget';
+
 type Goal = {
-  id: string;
-  label: string;
+  id: GoalId;
   Icon: (props: IconProps) => React.JSX.Element;
 };
 
-const GOALS: Goal[] = [
-  { id: 'savings', label: 'Build savings', Icon: SavingsIcon },
-  { id: 'debt', label: 'Pay off debt', Icon: CardIcon },
-  { id: 'spending', label: 'Track spending', Icon: TrendIconSmall },
-  { id: 'investing', label: 'Start investing', Icon: CoinIcon },
-  { id: 'subscriptions', label: 'Cut subscriptions', Icon: LoopIcon },
-  { id: 'budget', label: 'Budget better', Icon: ClockIcon },
+const GOAL_ITEMS: Goal[] = [
+  { id: 'savings', Icon: SavingsIcon },
+  { id: 'debt', Icon: CardIcon },
+  { id: 'spending', Icon: TrendIconSmall },
+  { id: 'investing', Icon: CoinIcon },
+  { id: 'subscriptions', Icon: LoopIcon },
+  { id: 'budget', Icon: ClockIcon },
 ];
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Goals'>;
 
 export default function Goals({ navigation }: Props) {
-  const [selected, setSelected] = useState<string[]>(['savings', 'debt']);
+  const { t } = useLanguage();
+  const [selected, setSelected] = useState<GoalId[]>(['savings', 'debt']);
 
-  const toggle = (id: string) =>
+  const toggle = (id: GoalId) =>
     setSelected((prev) => (prev.includes(id) ? prev.filter((g) => g !== id) : [...prev, id]));
 
   const canContinue = selected.length > 0;
@@ -162,8 +172,8 @@ export default function Goals({ navigation }: Props) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
-        <Text style={styles.stepLabel}>Step 3 of 4</Text>
-        <View style={{ width: 36 }} />
+        <Text style={styles.stepLabel}>{t.goals.step}</Text>
+        <LanguageToggle />
       </View>
 
       <View style={styles.progressRow}>
@@ -173,11 +183,11 @@ export default function Goals({ navigation }: Props) {
         <View style={styles.progressSegment} />
       </View>
 
-      <Text style={styles.heading}>What are you working toward?</Text>
-      <Text style={styles.subtitle}>Pick all that apply — we&apos;ll tailor your plan.</Text>
+      <Text style={styles.heading}>{t.goals.heading}</Text>
+      <Text style={styles.subtitle}>{t.goals.subtitle}</Text>
 
       <View style={styles.grid}>
-        {GOALS.map(({ id, label, Icon }) => {
+        {GOAL_ITEMS.map(({ id, Icon }) => {
           const active = selected.includes(id);
           return (
             <TouchableOpacity
@@ -196,7 +206,7 @@ export default function Goals({ navigation }: Props) {
               >
                 <Icon color={active ? '#ffffff' : colors.darkGreen} />
               </View>
-              <Text style={styles.cardLabel}>{label}</Text>
+              <Text style={styles.cardLabel}>{t.goals[id]}</Text>
             </TouchableOpacity>
           );
         })}
@@ -204,14 +214,16 @@ export default function Goals({ navigation }: Props) {
 
       <View style={{ flex: 1 }} />
 
-      <Text style={styles.selectionText}>{selected.length} selected · pick at least one</Text>
+      <Text style={styles.selectionText}>
+        {selected.length} {t.goals.selected} · {t.goals.pickAtLeastOne}
+      </Text>
 
       <TouchableOpacity
         style={[styles.button, !canContinue && styles.buttonDisabled]}
         disabled={!canContinue}
         onPress={() => navigation.navigate('Budget')}
       >
-        <Text style={styles.buttonText}>Continue →</Text>
+        <Text style={styles.buttonText}>{t.goals.continue} →</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
