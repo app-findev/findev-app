@@ -13,6 +13,7 @@ import Login from './src/screens/Login';
 import MainTabs from './src/navigation/MainTabs';
 import AddExpense from './src/screens/AddExpense';
 import EditExpense from './src/screens/EditExpense';
+import Paywall from './src/screens/Paywall';
 import type { RootStackParamList } from './src/navigation/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,6 +38,11 @@ export default function App() {
                 options={{ presentation: 'modal' }}
               />
               <Stack.Screen name="EditExpense" component={EditExpense} />
+              <Stack.Screen
+                name="Paywall"
+                component={Paywall}
+                options={{ presentation: 'modal' }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
           <StatusBar style="dark" />

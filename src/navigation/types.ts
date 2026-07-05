@@ -8,6 +8,7 @@ export type RootStackParamList = {
   MainTabs: undefined;
   AddExpense: undefined;
   EditExpense: { expenseId: string };
+  Paywall: undefined;
 };
 
 export type MainTabsParamList = {

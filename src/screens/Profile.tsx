@@ -123,14 +123,17 @@ export default function Profile({ navigation }: Props) {
           <Text style={styles.email}>alex@example.com</Text>
         </View>
 
-        <View style={styles.memberBox}>
+        <TouchableOpacity
+          style={styles.memberBox}
+          onPress={() => navigation.navigate('Paywall')}
+        >
           <TrendIcon size={16} color={colors.darkGreen} />
           <Text style={styles.memberText}>
             {t.profile.memberSince
               .replace('{month}', monthName)
               .replace('{plan}', t.profile.freePlan)}
           </Text>
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.menuList}>
           <MenuRow
