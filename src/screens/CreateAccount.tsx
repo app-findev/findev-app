@@ -1,14 +1,10 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import Svg, { Path, Circle } from "react-native-svg";
-import { colors } from "../theme";
+import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Svg, { Path, Circle } from 'react-native-svg';
+import { colors } from '../theme';
+import type { RootStackParamList } from '../navigation/types';
 
 function BackIcon() {
   return (
@@ -24,7 +20,7 @@ function BackIcon() {
   );
 }
 
-function EyeIcon({ open }) {
+function EyeIcon({ open }: { open: boolean }) {
   return open ? (
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <Path
@@ -61,9 +57,11 @@ function CheckIcon() {
   );
 }
 
-export default function CreateAccount({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+type Props = NativeStackScreenProps<RootStackParamList, 'CreateAccount'>;
+
+export default function CreateAccount({ navigation }: Props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const passwordValid = password.length >= 8;
@@ -73,10 +71,7 @@ export default function CreateAccount({ navigation }) {
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.topRow}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
         <Text style={styles.stepLabel}>Step 1 of 4</Text>
@@ -115,27 +110,17 @@ export default function CreateAccount({ navigation }) {
             secureTextEntry={!showPassword}
             style={[styles.input, { paddingRight: 44 }]}
           />
-          <TouchableOpacity
-            style={styles.eyeButton}
-            onPress={() => setShowPassword((v) => !v)}
-          >
+          <TouchableOpacity style={styles.eyeButton} onPress={() => setShowPassword((v) => !v)}>
             <EyeIcon open={showPassword} />
           </TouchableOpacity>
         </View>
 
         <View style={styles.checkRow}>
-          <View
-            style={[
-              styles.checkBox,
-              passwordValid && styles.checkBoxActive,
-            ]}
-          >
+          <View style={[styles.checkBox, passwordValid && styles.checkBoxActive]}>
             {passwordValid && <CheckIcon />}
           </View>
-          <Text
-            style={[styles.checkText, passwordValid && styles.checkTextActive]}
-          >
-            At least 8 characters{passwordValid ? " — looks good" : ""}
+          <Text style={[styles.checkText, passwordValid && styles.checkTextActive]}>
+            At least 8 characters{passwordValid ? ' — looks good' : ''}
           </Text>
         </View>
       </View>
@@ -145,14 +130,13 @@ export default function CreateAccount({ navigation }) {
       <TouchableOpacity
         style={[styles.button, !canContinue && styles.buttonDisabled]}
         disabled={!canContinue}
-        onPress={() => navigation.navigate("YourName")}
+        onPress={() => navigation.navigate('YourName')}
       >
-        <Text style={styles.buttonText}>Continue  →</Text>
+        <Text style={styles.buttonText}>Continue →</Text>
       </TouchableOpacity>
 
       <Text style={styles.footer}>
-        By continuing you agree to our{" "}
-        <Text style={styles.footerLink}>Terms</Text> &{" "}
+        By continuing you agree to our <Text style={styles.footerLink}>Terms</Text> &{' '}
         <Text style={styles.footerLink}>Privacy Policy</Text>.
       </Text>
     </SafeAreaView>
@@ -168,24 +152,24 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   topRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   backButton: {
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: "#f0f2ec",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#f0f2ec',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   stepLabel: {
     fontSize: 14,
     color: colors.mutedLight,
   },
   progressRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 6,
     marginTop: 20,
   },
@@ -200,7 +184,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 26,
-    fontWeight: "800",
+    fontWeight: '800',
     color: colors.darkGreen,
     marginTop: 28,
     marginBottom: 6,
@@ -214,11 +198,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    color: "#5c6b52",
+    color: '#5c6b52',
     marginBottom: 8,
   },
   input: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 12,
@@ -229,17 +213,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.inputBg,
   },
   passwordWrapper: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   eyeButton: {
-    position: "absolute",
+    position: 'absolute',
     right: 14,
-    height: "100%",
-    justifyContent: "center",
+    height: '100%',
+    justifyContent: 'center',
   },
   checkRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
     marginTop: 14,
   },
@@ -248,8 +232,8 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 5,
     backgroundColor: colors.track,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   checkBoxActive: {
     backgroundColor: colors.darkGreen,
@@ -260,15 +244,15 @@ const styles = StyleSheet.create({
   },
   checkTextActive: {
     color: colors.darkGreen,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   button: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 16,
     borderRadius: 14,
     backgroundColor: colors.green,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonDisabled: {
     opacity: 0.5,
@@ -276,17 +260,17 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.darkGreen,
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   footer: {
     marginTop: 16,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 12,
     color: colors.mutedLight,
     lineHeight: 18,
   },
   footerLink: {
-    color: "#5c6b52",
-    fontWeight: "700",
+    color: '#5c6b52',
+    fontWeight: '700',
   },
 });

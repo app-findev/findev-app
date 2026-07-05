@@ -1,14 +1,10 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import Svg, { Path, Circle } from "react-native-svg";
-import { colors } from "../theme";
+import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Svg, { Path, Circle } from 'react-native-svg';
+import { colors } from '../theme';
+import type { RootStackParamList } from '../navigation/types';
 
 function BackIcon() {
   return (
@@ -28,30 +24,24 @@ function InfoIcon() {
   return (
     <Svg width="18" height="18" viewBox="0 0 24 24" fill="none">
       <Circle cx="12" cy="12" r="9" stroke={colors.darkGreen} strokeWidth={1.8} />
-      <Path
-        d="M12 11v5"
-        stroke={colors.darkGreen}
-        strokeWidth={1.8}
-        strokeLinecap="round"
-      />
+      <Path d="M12 11v5" stroke={colors.darkGreen} strokeWidth={1.8} strokeLinecap="round" />
       <Circle cx="12" cy="8" r="1" fill={colors.darkGreen} />
     </Svg>
   );
 }
 
-export default function YourName({ navigation }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+type Props = NativeStackScreenProps<RootStackParamList, 'YourName'>;
+
+export default function YourName({ navigation }: Props) {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const canContinue = firstName.trim().length > 0;
 
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.topRow}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
         <Text style={styles.stepLabel}>Step 2 of 4</Text>
@@ -66,9 +56,7 @@ export default function YourName({ navigation }) {
       </View>
 
       <Text style={styles.heading}>What should we call you?</Text>
-      <Text style={styles.subtitle}>
-        We&apos;ll use this to personalize your space.
-      </Text>
+      <Text style={styles.subtitle}>We&apos;ll use this to personalize your space.</Text>
 
       <View style={styles.fieldGroup}>
         <Text style={styles.label}>First name</Text>
@@ -94,9 +82,7 @@ export default function YourName({ navigation }) {
 
       <View style={styles.infoBox}>
         <InfoIcon />
-        <Text style={styles.infoText}>
-          Your name stays private. We never share it with anyone.
-        </Text>
+        <Text style={styles.infoText}>Your name stays private. We never share it with anyone.</Text>
       </View>
 
       <View style={{ flex: 1 }} />
@@ -104,9 +90,9 @@ export default function YourName({ navigation }) {
       <TouchableOpacity
         style={[styles.button, !canContinue && styles.buttonDisabled]}
         disabled={!canContinue}
-        onPress={() => navigation.navigate("Goals")}
+        onPress={() => navigation.navigate('Goals')}
       >
-        <Text style={styles.buttonText}>Continue  →</Text>
+        <Text style={styles.buttonText}>Continue →</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -121,24 +107,24 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   topRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   backButton: {
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: "#f0f2ec",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#f0f2ec',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   stepLabel: {
     fontSize: 14,
     color: colors.mutedLight,
   },
   progressRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 6,
     marginTop: 20,
   },
@@ -156,7 +142,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 26,
-    fontWeight: "800",
+    fontWeight: '800',
     color: colors.darkGreen,
     marginTop: 28,
     marginBottom: 6,
@@ -170,11 +156,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    color: "#5c6b52",
+    color: '#5c6b52',
     marginBottom: 8,
   },
   input: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 12,
@@ -186,8 +172,8 @@ const styles = StyleSheet.create({
   },
   infoBox: {
     marginTop: 20,
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     gap: 10,
     backgroundColor: colors.heroBg,
     borderRadius: 14,
@@ -200,12 +186,12 @@ const styles = StyleSheet.create({
     lineHeight: 19,
   },
   button: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 16,
     borderRadius: 14,
     backgroundColor: colors.green,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonDisabled: {
     opacity: 0.5,
@@ -213,6 +199,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.darkGreen,
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });

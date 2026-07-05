@@ -1,14 +1,13 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import TrendIcon from "../components/TrendIcon";
-import { colors } from "../theme";
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import TrendIcon from '../components/TrendIcon';
+import { colors } from '../theme';
+import type { RootStackParamList } from '../navigation/types';
 
-export default function Welcome({ navigation }) {
+type Props = NativeStackScreenProps<RootStackParamList, 'Welcome'>;
+
+export default function Welcome({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.brandRow}>
@@ -29,8 +28,7 @@ export default function Welcome({ navigation }) {
 
       <View style={styles.textBlock}>
         <Text style={styles.heading}>
-          Spend a little,{"\n"}save a{" "}
-          <Text style={styles.highlight}> lot </Text>.
+          Spend a little,{'\n'}save a <Text style={styles.highlight}> lot </Text>.
         </Text>
         <Text style={styles.subtitle}>
           Track every dollar, hit your goals, and feel good about your money.
@@ -38,17 +36,14 @@ export default function Welcome({ navigation }) {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("CreateAccount")}
+          onPress={() => navigation.navigate('CreateAccount')}
         >
-          <Text style={styles.buttonText}>Get started  →</Text>
+          <Text style={styles.buttonText}>Get started →</Text>
         </TouchableOpacity>
 
         <Text style={styles.loginRow}>
-          Already have an account?{" "}
-          <Text
-            style={styles.loginLink}
-            onPress={() => navigation.navigate("Login")}
-          >
+          Already have an account?{' '}
+          <Text style={styles.loginLink} onPress={() => navigation.navigate('Login')}>
             Log in
           </Text>
         </Text>
@@ -66,8 +61,8 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   brandRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
     marginBottom: 24,
   },
@@ -76,20 +71,20 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 8,
     backgroundColor: colors.darkGreen,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   brandName: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.darkGreen,
   },
   heroWrapper: {
     flex: 1,
     borderRadius: 24,
     backgroundColor: colors.heroBg,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: 12,
     minHeight: 260,
   },
@@ -97,10 +92,10 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 14,
-    backgroundColor: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
     shadowOpacity: 0.08,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
@@ -111,8 +106,8 @@ const styles = StyleSheet.create({
     height: 34,
     borderRadius: 8,
     backgroundColor: colors.darkGreen,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   heroLabel: {
     fontSize: 12,
@@ -124,7 +119,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 30,
-    fontWeight: "800",
+    fontWeight: '800',
     color: colors.darkGreen,
     lineHeight: 36,
   },
@@ -140,26 +135,26 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 24,
-    width: "100%",
+    width: '100%',
     paddingVertical: 16,
     borderRadius: 14,
     backgroundColor: colors.green,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: colors.darkGreen,
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   loginRow: {
     marginTop: 16,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 14,
-    color: "#5c6b52",
+    color: '#5c6b52',
   },
   loginLink: {
     color: colors.darkGreen,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });

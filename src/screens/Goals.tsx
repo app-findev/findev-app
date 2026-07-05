@@ -1,13 +1,14 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import Svg, { Path, Circle, Rect, Line } from "react-native-svg";
-import { colors } from "../theme";
+import { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Svg, { Path, Circle, Rect, Line } from 'react-native-svg';
+import { colors } from '../theme';
+import type { RootStackParamList } from '../navigation/types';
+
+type IconProps = {
+  color: string;
+};
 
 function BackIcon() {
   return (
@@ -37,7 +38,7 @@ function CheckBadgeIcon() {
   );
 }
 
-function SavingsIcon({ color }) {
+function SavingsIcon({ color }: IconProps) {
   return (
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <Path
@@ -51,7 +52,7 @@ function SavingsIcon({ color }) {
   );
 }
 
-function CardIcon({ color }) {
+function CardIcon({ color }: IconProps) {
   return (
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <Rect x="3" y="6" width="18" height="13" rx="2.2" stroke={color} strokeWidth={1.6} />
@@ -60,7 +61,7 @@ function CardIcon({ color }) {
   );
 }
 
-function TrendIconSmall({ color }) {
+function TrendIconSmall({ color }: IconProps) {
   return (
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <Path
@@ -81,7 +82,7 @@ function TrendIconSmall({ color }) {
   );
 }
 
-function CoinIcon({ color }) {
+function CoinIcon({ color }: IconProps) {
   return (
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <Circle cx="12" cy="12" r="8.5" stroke={color} strokeWidth={1.6} />
@@ -95,7 +96,7 @@ function CoinIcon({ color }) {
   );
 }
 
-function LoopIcon({ color }) {
+function LoopIcon({ color }: IconProps) {
   return (
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <Path
@@ -104,46 +105,61 @@ function LoopIcon({ color }) {
         strokeWidth={1.6}
         strokeLinecap="round"
       />
-      <Path d="M18 3v4.5h-4.5M6 21v-4.5h4.5" stroke={color} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
+      <Path
+        d="M18 3v4.5h-4.5M6 21v-4.5h4.5"
+        stroke={color}
+        strokeWidth={1.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   );
 }
 
-function ClockIcon({ color }) {
+function ClockIcon({ color }: IconProps) {
   return (
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <Circle cx="12" cy="12" r="8.5" stroke={color} strokeWidth={1.6} />
-      <Path d="M12 7.5V12l3 2" stroke={color} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
+      <Path
+        d="M12 7.5V12l3 2"
+        stroke={color}
+        strokeWidth={1.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   );
 }
 
-const GOALS = [
-  { id: "savings", label: "Build savings", Icon: SavingsIcon },
-  { id: "debt", label: "Pay off debt", Icon: CardIcon },
-  { id: "spending", label: "Track spending", Icon: TrendIconSmall },
-  { id: "investing", label: "Start investing", Icon: CoinIcon },
-  { id: "subscriptions", label: "Cut subscriptions", Icon: LoopIcon },
-  { id: "budget", label: "Budget better", Icon: ClockIcon },
+type Goal = {
+  id: string;
+  label: string;
+  Icon: (props: IconProps) => React.JSX.Element;
+};
+
+const GOALS: Goal[] = [
+  { id: 'savings', label: 'Build savings', Icon: SavingsIcon },
+  { id: 'debt', label: 'Pay off debt', Icon: CardIcon },
+  { id: 'spending', label: 'Track spending', Icon: TrendIconSmall },
+  { id: 'investing', label: 'Start investing', Icon: CoinIcon },
+  { id: 'subscriptions', label: 'Cut subscriptions', Icon: LoopIcon },
+  { id: 'budget', label: 'Budget better', Icon: ClockIcon },
 ];
 
-export default function Goals({ navigation }) {
-  const [selected, setSelected] = useState(["savings", "debt"]);
+type Props = NativeStackScreenProps<RootStackParamList, 'Goals'>;
 
-  const toggle = (id) =>
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((g) => g !== id) : [...prev, id]
-    );
+export default function Goals({ navigation }: Props) {
+  const [selected, setSelected] = useState<string[]>(['savings', 'debt']);
+
+  const toggle = (id: string) =>
+    setSelected((prev) => (prev.includes(id) ? prev.filter((g) => g !== id) : [...prev, id]));
 
   const canContinue = selected.length > 0;
 
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.topRow}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
         <Text style={styles.stepLabel}>Step 3 of 4</Text>
@@ -158,9 +174,7 @@ export default function Goals({ navigation }) {
       </View>
 
       <Text style={styles.heading}>What are you working toward?</Text>
-      <Text style={styles.subtitle}>
-        Pick all that apply — we&apos;ll tailor your plan.
-      </Text>
+      <Text style={styles.subtitle}>Pick all that apply — we&apos;ll tailor your plan.</Text>
 
       <View style={styles.grid}>
         {GOALS.map(({ id, label, Icon }) => {
@@ -178,12 +192,9 @@ export default function Goals({ navigation }) {
                 </View>
               )}
               <View
-                style={[
-                  styles.iconBox,
-                  active ? styles.iconBoxActive : styles.iconBoxInactive,
-                ]}
+                style={[styles.iconBox, active ? styles.iconBoxActive : styles.iconBoxInactive]}
               >
-                <Icon color={active ? "#ffffff" : colors.darkGreen} />
+                <Icon color={active ? '#ffffff' : colors.darkGreen} />
               </View>
               <Text style={styles.cardLabel}>{label}</Text>
             </TouchableOpacity>
@@ -193,16 +204,14 @@ export default function Goals({ navigation }) {
 
       <View style={{ flex: 1 }} />
 
-      <Text style={styles.selectionText}>
-        {selected.length} selected · pick at least one
-      </Text>
+      <Text style={styles.selectionText}>{selected.length} selected · pick at least one</Text>
 
       <TouchableOpacity
         style={[styles.button, !canContinue && styles.buttonDisabled]}
         disabled={!canContinue}
-        onPress={() => navigation.navigate("Budget")}
+        onPress={() => navigation.navigate('Budget')}
       >
-        <Text style={styles.buttonText}>Continue  →</Text>
+        <Text style={styles.buttonText}>Continue →</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -217,24 +226,24 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   topRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   backButton: {
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: "#f0f2ec",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#f0f2ec',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   stepLabel: {
     fontSize: 14,
     color: colors.mutedLight,
   },
   progressRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 6,
     marginTop: 20,
   },
@@ -252,7 +261,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
-    fontWeight: "800",
+    fontWeight: '800',
     color: colors.darkGreen,
     marginTop: 28,
     lineHeight: 30,
@@ -264,40 +273,40 @@ const styles = StyleSheet.create({
   },
   grid: {
     marginTop: 20,
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 12,
   },
   card: {
-    width: "47%",
+    width: '47%',
     borderRadius: 16,
     borderWidth: 1.5,
     borderColor: colors.inputBorder,
-    backgroundColor: "#ffffff",
+    backgroundColor: '#ffffff',
     padding: 16,
-    position: "relative",
+    position: 'relative',
   },
   cardActive: {
     borderColor: colors.green,
-    backgroundColor: "#eef7e6",
+    backgroundColor: '#eef7e6',
   },
   checkBadge: {
-    position: "absolute",
+    position: 'absolute',
     top: 10,
     right: 10,
     width: 20,
     height: 20,
     borderRadius: 10,
     backgroundColor: colors.darkGreen,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   iconBox: {
     width: 44,
     height: 44,
     borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 12,
   },
   iconBoxActive: {
@@ -308,23 +317,23 @@ const styles = StyleSheet.create({
   },
   cardLabel: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.darkGreen,
   },
   selectionText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.darkGreen,
     marginBottom: 12,
   },
   button: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 16,
     borderRadius: 14,
     backgroundColor: colors.green,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonDisabled: {
     opacity: 0.5,
@@ -332,6 +341,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.darkGreen,
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });

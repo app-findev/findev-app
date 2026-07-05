@@ -1,14 +1,11 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import Slider from "@react-native-community/slider";
-import Svg, { Path, Circle } from "react-native-svg";
-import { colors } from "../theme";
+import { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Slider from '@react-native-community/slider';
+import Svg, { Path, Circle } from 'react-native-svg';
+import { colors } from '../theme';
+import type { RootStackParamList } from '../navigation/types';
 
 const MIN = 500;
 const MAX = 6000;
@@ -37,20 +34,19 @@ function TargetIcon() {
   );
 }
 
-function formatCurrency(value) {
-  return Math.round(value).toLocaleString("en-US");
+function formatCurrency(value: number): string {
+  return Math.round(value).toLocaleString('en-US');
 }
 
-export default function Budget({ navigation }) {
+type Props = NativeStackScreenProps<RootStackParamList, 'Budget'>;
+
+export default function Budget({ navigation }: Props) {
   const [amount, setAmount] = useState(2400);
 
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.topRow}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
         <Text style={styles.stepLabel}>Step 4 of 4</Text>
@@ -87,8 +83,8 @@ export default function Budget({ navigation }) {
         />
 
         <View style={styles.rangeRow}>
-          <Text style={styles.rangeText}>${MIN.toLocaleString("en-US")}</Text>
-          <Text style={styles.rangeText}>${MAX.toLocaleString("en-US")}</Text>
+          <Text style={styles.rangeText}>${MIN.toLocaleString('en-US')}</Text>
+          <Text style={styles.rangeText}>${MAX.toLocaleString('en-US')}</Text>
         </View>
       </View>
 
@@ -97,7 +93,7 @@ export default function Budget({ navigation }) {
         <View style={styles.splitBar}>
           <View style={[styles.splitSegment, { flex: 45, backgroundColor: colors.darkGreen }]} />
           <View style={[styles.splitSegment, { flex: 35, backgroundColor: colors.green }]} />
-          <View style={[styles.splitSegment, { flex: 20, backgroundColor: "#0d1f04" }]} />
+          <View style={[styles.splitSegment, { flex: 20, backgroundColor: '#0d1f04' }]} />
         </View>
         <View style={styles.legendRow}>
           <View style={styles.legendItem}>
@@ -109,7 +105,7 @@ export default function Budget({ navigation }) {
             <Text style={styles.legendText}>Lifestyle</Text>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: "#0d1f04" }]} />
+            <View style={[styles.legendDot, { backgroundColor: '#0d1f04' }]} />
             <Text style={styles.legendText}>Savings</Text>
           </View>
         </View>
@@ -125,7 +121,7 @@ export default function Budget({ navigation }) {
       <View style={{ flex: 1 }} />
 
       <TouchableOpacity style={styles.button} onPress={() => {}}>
-        <Text style={styles.buttonText}>Finish setup  →</Text>
+        <Text style={styles.buttonText}>Finish setup →</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -140,24 +136,24 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   topRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   backButton: {
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: "#f0f2ec",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#f0f2ec',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   stepLabel: {
     fontSize: 14,
     color: colors.mutedLight,
   },
   progressRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 6,
     marginTop: 20,
   },
@@ -175,7 +171,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
-    fontWeight: "800",
+    fontWeight: '800',
     color: colors.darkGreen,
     marginTop: 28,
   },
@@ -186,37 +182,37 @@ const styles = StyleSheet.create({
   },
   amountBlock: {
     marginTop: 28,
-    alignItems: "center",
+    alignItems: 'center',
   },
   amountLabel: {
     fontSize: 13,
     color: colors.muted,
   },
   amountRow: {
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    alignItems: 'flex-end',
     marginTop: 8,
   },
   amountSign: {
     fontSize: 24,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.darkGreen,
     marginBottom: 8,
   },
   amountValue: {
     fontSize: 48,
-    fontWeight: "800",
+    fontWeight: '800',
     color: colors.darkGreen,
   },
   slider: {
-    width: "100%",
+    width: '100%',
     height: 40,
     marginTop: 16,
   },
   rangeRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
   rangeText: {
     fontSize: 13,
@@ -230,27 +226,27 @@ const styles = StyleSheet.create({
   },
   splitLabel: {
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.darkGreen,
     marginBottom: 10,
   },
   splitBar: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 10,
     borderRadius: 5,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   splitSegment: {
-    height: "100%",
+    height: '100%',
   },
   legendRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 12,
   },
   legendItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 6,
   },
   legendDot: {
@@ -264,8 +260,8 @@ const styles = StyleSheet.create({
   },
   noteRow: {
     marginTop: 20,
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     gap: 8,
   },
   noteText: {
@@ -275,16 +271,16 @@ const styles = StyleSheet.create({
     lineHeight: 19,
   },
   button: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 16,
     borderRadius: 14,
     backgroundColor: colors.green,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: colors.darkGreen,
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });
