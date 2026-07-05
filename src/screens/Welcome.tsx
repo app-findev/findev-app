@@ -2,12 +2,16 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import TrendIcon from '../components/TrendIcon';
+import LanguageToggle from '../components/LanguageToggle';
+import { useLanguage } from '../i18n/LanguageContext';
 import { colors } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Welcome'>;
 
 export default function Welcome({ navigation }: Props) {
+  const { t } = useLanguage();
+
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.brandRow}>
@@ -15,6 +19,8 @@ export default function Welcome({ navigation }: Props) {
           <TrendIcon size={18} />
         </View>
         <Text style={styles.brandName}>SpentLittle</Text>
+        <View style={{ flex: 1 }} />
+        <LanguageToggle />
       </View>
 
       <View style={styles.heroWrapper}>
@@ -23,28 +29,29 @@ export default function Welcome({ navigation }: Props) {
             <TrendIcon size={20} />
           </View>
         </View>
-        <Text style={styles.heroLabel}>hero illustration</Text>
+        <Text style={styles.heroLabel}>{t.welcome.heroLabel}</Text>
       </View>
 
       <View style={styles.textBlock}>
         <Text style={styles.heading}>
-          Spend a little,{'\n'}save a <Text style={styles.highlight}> lot </Text>.
+          {t.welcome.headingLine1}
+          {'\n'}
+          {t.welcome.headingLine2}{' '}
+          <Text style={styles.highlight}> {t.welcome.highlight} </Text>.
         </Text>
-        <Text style={styles.subtitle}>
-          Track every dollar, hit your goals, and feel good about your money.
-        </Text>
+        <Text style={styles.subtitle}>{t.welcome.subtitle}</Text>
 
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('CreateAccount')}
         >
-          <Text style={styles.buttonText}>Get started →</Text>
+          <Text style={styles.buttonText}>{t.welcome.getStarted} →</Text>
         </TouchableOpacity>
 
         <Text style={styles.loginRow}>
-          Already have an account?{' '}
+          {t.welcome.haveAccount}{' '}
           <Text style={styles.loginLink} onPress={() => navigation.navigate('Login')}>
-            Log in
+            {t.welcome.login}
           </Text>
         </Text>
       </View>

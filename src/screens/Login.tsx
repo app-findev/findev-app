@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Svg, { Path, Circle } from 'react-native-svg';
 import TrendIcon from '../components/TrendIcon';
+import LanguageToggle from '../components/LanguageToggle';
+import { useLanguage } from '../i18n/LanguageContext';
 import { colors } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 
@@ -33,6 +35,7 @@ function EyeIcon({ open }: { open: boolean }) {
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 export default function Login({ navigation }: Props) {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -44,13 +47,15 @@ export default function Login({ navigation }: Props) {
           <TrendIcon size={18} />
         </View>
         <Text style={styles.brandName}>SpentLittle</Text>
+        <View style={{ flex: 1 }} />
+        <LanguageToggle />
       </View>
 
-      <Text style={styles.heading}>Welcome back</Text>
-      <Text style={styles.subtitle}>Log in to keep tracking your money.</Text>
+      <Text style={styles.heading}>{t.login.heading}</Text>
+      <Text style={styles.subtitle}>{t.login.subtitle}</Text>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>{t.login.email}</Text>
         <TextInput
           placeholder="alex@example.com"
           placeholderTextColor={colors.mutedLight}
@@ -63,7 +68,7 @@ export default function Login({ navigation }: Props) {
       </View>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.label}>Password</Text>
+        <Text style={styles.label}>{t.login.password}</Text>
         <View style={styles.passwordWrapper}>
           <TextInput
             value={password}
@@ -77,20 +82,20 @@ export default function Login({ navigation }: Props) {
         </View>
 
         <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
-          <Text style={styles.forgotText}>Forgot password?</Text>
+          <Text style={styles.forgotText}>{t.login.forgotPassword}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={{ flex: 1 }} />
 
       <TouchableOpacity style={styles.button} onPress={() => {}}>
-        <Text style={styles.buttonText}>Log in →</Text>
+        <Text style={styles.buttonText}>{t.login.login} →</Text>
       </TouchableOpacity>
 
       <Text style={styles.signupRow}>
-        Don&apos;t have an account?{' '}
+        {t.login.noAccount}{' '}
         <Text style={styles.signupLink} onPress={() => navigation.navigate('CreateAccount')}>
-          Sign up
+          {t.login.signUp}
         </Text>
       </Text>
     </SafeAreaView>
