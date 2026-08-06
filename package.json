@@ -1,0 +1,24 @@
+{
+  "name": "findev",
+  "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "packageManager": "pnpm@10.26.1",
+  "scripts": {
+    "start": "pnpm --filter @findev/mobile start",
+    "android": "pnpm --filter @findev/mobile android",
+    "ios": "pnpm --filter @findev/mobile ios",
+    "web": "pnpm --filter @findev/mobile web",
+    "typecheck": "pnpm -r run typecheck",
+    "lint": "pnpm -r run lint",
+    "lint:fix": "pnpm -r run lint:fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "pnpm -r run test",
+    "check": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.4"
+  }
+}
