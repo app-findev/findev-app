@@ -373,7 +373,12 @@ EOF
 
 - [ ] **Step 1: Rewrite the root `README.md`**
 
-```markdown
+Note on the code block below: it uses a 4-backtick fence (````) because the
+file content itself contains 3-backtick fences (the directory tree and the
+bash example) — write the file's actual content (everything between the
+outer ```` markers), not the outer fence markers themselves.
+
+````markdown
 # FinDev (SpentLittle)
 
 > Spend a little, save a lot.
@@ -406,11 +411,14 @@ This proxies to the mobile app (`apps/mobile`). See
 ## License
 
 MIT © Laura Lacort Zimmermann
-```
+````
 
 - [ ] **Step 2: Create `apps/mobile/README.md`**
 
-```markdown
+Same note as Step 1: this is a 4-backtick fence because the content
+contains its own 3-backtick bash block.
+
+````markdown
 # FinDev (SpentLittle) — mobile
 
 > Spend a little, save a lot.
@@ -459,7 +467,7 @@ Scan the QR code with the **Expo Go** app on your phone, or press `w` to open it
 ## License
 
 MIT © Laura Lacort Zimmermann
-```
+````
 
 - [ ] **Step 3: Verify**
 
