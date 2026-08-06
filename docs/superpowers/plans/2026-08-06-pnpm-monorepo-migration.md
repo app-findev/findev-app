@@ -24,13 +24,15 @@
 ### Task 1: Scaffold the workspace skeleton
 
 **Files:**
+
 - Create: `pnpm-workspace.yaml`
 - Move (git mv, content unchanged): `App.tsx`, `index.ts`, `app.json`, `assets/`, `src/`, `tsconfig.json`, `eslint.config.js`, `package.json` → `apps/mobile/`
 - Modify: `.prettierignore`
 
 **Interfaces:**
+
 - Consumes: nothing (first task).
-- Produces: `apps/mobile/` containing every current app file. `apps/mobile/package.json` still has the *pre-migration* root content at the end of this task — Task 2 rewrites it. Nothing in this task should invoke `pnpm install` or any `pnpm` command (there is no root `package.json` yet).
+- Produces: `apps/mobile/` containing every current app file. `apps/mobile/package.json` still has the _pre-migration_ root content at the end of this task — Task 2 rewrites it. Nothing in this task should invoke `pnpm install` or any `pnpm` command (there is no root `package.json` yet).
 
 - [ ] **Step 1: Create `pnpm-workspace.yaml`**
 
@@ -43,6 +45,7 @@ packages:
 - [ ] **Step 2: Create `apps/mobile` and move the app files into it**
 
 Run:
+
 ```bash
 mkdir -p apps/mobile
 git mv App.tsx index.ts app.json assets src tsconfig.json eslint.config.js package.json apps/mobile/
@@ -57,6 +60,7 @@ This directory is gitignored (plain filesystem cleanup, not a git change). It re
 - [ ] **Step 4: Update `.prettierignore`**
 
 Current content:
+
 ```
 node_modules
 dist
@@ -108,16 +112,19 @@ EOF
 ### Task 2: Split package.json into workspace root + `@findev/mobile`
 
 **Files:**
+
 - Modify: `apps/mobile/package.json` (currently holds the pre-migration root content, verbatim, from Task 1)
 - Create: `package.json` (workspace root)
 
 **Interfaces:**
+
 - Consumes: `apps/mobile/package.json` as left by Task 1 (full original `dependencies`/`devDependencies` list).
 - Produces: root `package.json` named `findev`, with proxy scripts and `packageManager` pin. `apps/mobile/package.json` named `@findev/mobile`, exposing `typecheck`/`lint`/`lint:fix`/`test` — every later task and the root's `pnpm -r run ...` scripts rely on these exact names.
 
 - [ ] **Step 1: Rewrite `apps/mobile/package.json`**
 
 Full file content:
+
 ```json
 {
   "name": "@findev/mobile",
@@ -186,6 +193,7 @@ Note what changed vs. the pre-migration file: `name` → `@findev/mobile`; dropp
 - [ ] **Step 2: Create the workspace root `package.json`**
 
 Full file content:
+
 ```json
 {
   "name": "findev",
@@ -254,9 +262,11 @@ EOF
 ### Task 3: Add `apps/mobile/metro.config.js`
 
 **Files:**
+
 - Create: `apps/mobile/metro.config.js`
 
 **Interfaces:**
+
 - Consumes: `apps/mobile/package.json` with `expo` installed (Task 2).
 - Produces: nothing later tasks import — but Task 4's bundling-related checks assume this file is present.
 
@@ -273,6 +283,7 @@ The `expo/metro-config.js` subpath (with the `.js` extension) is required: this 
 - [ ] **Step 2: Verify bundling still works (smoke test)**
 
 Run:
+
 ```bash
 pnpm --filter @findev/mobile exec expo export --platform ios --output-dir /tmp/findev-export-check
 ```
@@ -305,9 +316,11 @@ EOF
 ### Task 4: Full verification pass across the workspace
 
 **Files:**
+
 - Modify (Prettier formatting only, no logic change): `apps/mobile/src/components/LanguageToggle.tsx`, `apps/mobile/src/i18n/LanguageContext.tsx`, `apps/mobile/src/i18n/translations.ts`, `apps/mobile/src/screens/CreateAccount.tsx`, `apps/mobile/src/screens/Goals.tsx`, `apps/mobile/src/screens/Welcome.tsx`
 
 **Interfaces:**
+
 - Consumes: everything from Tasks 1–3 (full workspace wired up).
 - Produces: a green `pnpm run check` at the workspace root — the acceptance bar for the whole migration.
 
@@ -366,6 +379,7 @@ EOF
 ### Task 5: Split the README
 
 **Files:**
+
 - Modify: `README.md` (root — rewritten to a monorepo overview)
 - Create: `apps/mobile/README.md` (detailed app docs, moved from the pre-migration root README)
 
@@ -373,10 +387,11 @@ EOF
 
 - [ ] **Step 1: Rewrite the root `README.md`**
 
-Note on the code block below: it uses a 4-backtick fence (````) because the
-file content itself contains 3-backtick fences (the directory tree and the
-bash example) — write the file's actual content (everything between the
-outer ```` markers), not the outer fence markers themselves.
+Note on the code block below: it uses a fence of four backticks because the
+file content itself contains fences of three backticks (the directory tree
+and the bash example) — write the file's actual content (everything
+between the opening and closing four-backtick lines), not the fence
+markers themselves.
 
 ````markdown
 # FinDev (SpentLittle)
