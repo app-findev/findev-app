@@ -1,5 +1,5 @@
 node_modules
 dist
 .expo
-package-lock.json
+pnpm-lock.yaml
 assets
