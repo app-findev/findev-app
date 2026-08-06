@@ -36,8 +36,7 @@ export default function Welcome({ navigation }: Props) {
         <Text style={styles.heading}>
           {t.welcome.headingLine1}
           {'\n'}
-          {t.welcome.headingLine2}{' '}
-          <Text style={styles.highlight}> {t.welcome.highlight} </Text>.
+          {t.welcome.headingLine2} <Text style={styles.highlight}> {t.welcome.highlight} </Text>.
         </Text>
         <Text style={styles.subtitle}>{t.welcome.subtitle}</Text>
 

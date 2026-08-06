@@ -11,17 +11,13 @@ export default function LanguageToggle() {
         style={[styles.option, language === 'pt' && styles.optionActive]}
         onPress={() => setLanguage('pt')}
       >
-        <Text style={[styles.text, language === 'pt' && styles.textActive]}>
-          PT
-        </Text>
+        <Text style={[styles.text, language === 'pt' && styles.textActive]}>PT</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.option, language === 'en' && styles.optionActive]}
         onPress={() => setLanguage('en')}
       >
-        <Text style={[styles.text, language === 'en' && styles.textActive]}>
-          EN
-        </Text>
+        <Text style={[styles.text, language === 'en' && styles.textActive]}>EN</Text>
       </TouchableOpacity>
     </View>
   );
