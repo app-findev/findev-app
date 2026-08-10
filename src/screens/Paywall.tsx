@@ -1,16 +1,11 @@
 import { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import TrendIcon from '../components/TrendIcon';
 import { useLanguage } from '../i18n/LanguageContext';
 import { formatCurrency } from '../utils/format';
+import { showComingSoonAlert } from '../utils/comingSoon';
 import { colors } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 
@@ -27,11 +22,7 @@ export default function Paywall({ navigation }: Props) {
   const { t, language } = useLanguage();
   const [selected, setSelected] = useState<PlanId>('annual');
 
-  const showComingSoon = () => {
-    Alert.alert(t.profile.comingSoonTitle, t.profile.comingSoonMessage, [
-      { text: t.profile.ok },
-    ]);
-  };
+  const showComingSoon = () => showComingSoonAlert(t.common);
 
   const handleContinue = () => {
     Alert.alert(t.paywall.successTitle, t.paywall.successMessage, [
@@ -70,20 +61,13 @@ export default function Paywall({ navigation }: Props) {
               <Text style={styles.planPricePeriod}>{t.paywall.perMonth}</Text>
             </View>
           </View>
-          <View
-            style={[
-              styles.radioOuter,
-              selected === 'annual' && styles.radioOuterActive,
-            ]}
-          >
+          <View style={[styles.radioOuter, selected === 'annual' && styles.radioOuterActive]}>
             {selected === 'annual' && <View style={styles.radioInner} />}
           </View>
         </View>
 
         <View style={styles.featureList}>
-          <Text style={styles.featureItem}>
-            ✓ {t.paywall.featureInsights}
-          </Text>
+          <Text style={styles.featureItem}>✓ {t.paywall.featureInsights}</Text>
           <Text style={styles.featureItem}>✓ {t.paywall.featureGoals}</Text>
           <Text style={styles.featureItem}>✓ {t.paywall.featureExport}</Text>
         </View>
@@ -103,12 +87,7 @@ export default function Paywall({ navigation }: Props) {
               <Text style={styles.planPricePeriod}>{t.paywall.perMonth}</Text>
             </View>
           </View>
-          <View
-            style={[
-              styles.radioOuter,
-              selected === 'monthly' && styles.radioOuterActive,
-            ]}
-          >
+          <View style={[styles.radioOuter, selected === 'monthly' && styles.radioOuterActive]}>
             {selected === 'monthly' && <View style={styles.radioInner} />}
           </View>
         </View>
@@ -117,7 +96,7 @@ export default function Paywall({ navigation }: Props) {
       <View style={{ flex: 1 }} />
 
       <TouchableOpacity style={styles.button} onPress={handleContinue}>
-        <Text style={styles.buttonText}>{t.paywall.continue}  →</Text>
+        <Text style={styles.buttonText}>{t.paywall.continue} →</Text>
       </TouchableOpacity>
 
       <View style={styles.linksRow}>
@@ -132,8 +111,7 @@ export default function Paywall({ navigation }: Props) {
 
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Text style={styles.freeText}>
-          {t.paywall.continueFree}{' '}
-          <Text style={styles.freeTextBold}>{t.paywall.freeVersion}</Text>
+          {t.paywall.continueFree} <Text style={styles.freeTextBold}>{t.paywall.freeVersion}</Text>
         </Text>
       </TouchableOpacity>
     </SafeAreaView>

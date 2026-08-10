@@ -5,14 +5,17 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { useExpenses } from '../context/ExpensesContext';
 import { CalendarIcon, type IconProps } from '../components/icons';
 import Svg, { Path } from 'react-native-svg';
-import { formatCurrency } from '../utils/format';
+import { formatCurrency, getLocale } from '../utils/format';
+import { showComingSoonAlert } from '../utils/comingSoon';
 import { CATEGORY_COLORS, CATEGORY_ORDER, type CategoryKey } from '../data/categories';
 import { colors } from '../theme';
 
+// Mock spending history, expressed relative to the current month so it
+// never goes stale as the real current month changes.
 const PAST_MONTHS = [
-  { monthIndex: 2, amount: 2100 },
-  { monthIndex: 3, amount: 1950 },
-  { monthIndex: 4, amount: 2660 },
+  { monthsAgo: 3, amount: 2100 },
+  { monthsAgo: 2, amount: 1950 },
+  { monthsAgo: 1, amount: 2660 },
 ];
 
 function ArrowUpIcon({ size = 16, color = colors.darkGreen }: IconProps) {
@@ -46,21 +49,21 @@ function ArrowDownIcon({ size = 16, color = colors.darkGreen }: IconProps) {
 export default function Insights() {
   const { t, language } = useLanguage();
   const { expenses } = useExpenses();
-  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
+  const locale = getLocale(language);
 
-  const currentMonthDate = new Date(2026, 5, 1);
+  const currentMonthDate = useMemo(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  }, []);
   const currentMonthName = currentMonthDate
     .toLocaleDateString(locale, { month: 'long' })
     .replace(/^\w/, (c) => c.toUpperCase());
 
-  const currentTotal = useMemo(
-    () => expenses.reduce((sum, e) => sum + e.amount, 0),
-    [expenses]
-  );
+  const currentTotal = useMemo(() => expenses.reduce((sum, e) => sum + e.amount, 0), [expenses]);
 
   const months = useMemo(() => {
     const historical = PAST_MONTHS.map((m) => ({
-      label: new Date(2026, m.monthIndex, 1)
+      label: new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() - m.monthsAgo, 1)
         .toLocaleDateString(locale, { month: 'short' })
         .replace('.', '')
         .replace(/^\w/, (c) => c.toUpperCase()),
@@ -75,16 +78,19 @@ export default function Insights() {
         active: true,
       },
     ];
-  }, [currentTotal, locale, currentMonthName]);
+  }, [currentTotal, locale, currentMonthName, currentMonthDate]);
 
   const maxMonthAmount = Math.max(...months.map((m) => m.amount));
 
   const previousMonth = PAST_MONTHS[PAST_MONTHS.length - 1];
-  const previousMonthName = new Date(2026, previousMonth.monthIndex, 1)
+  const previousMonthName = new Date(
+    currentMonthDate.getFullYear(),
+    currentMonthDate.getMonth() - previousMonth.monthsAgo,
+    1
+  )
     .toLocaleDateString(locale, { month: 'long' })
     .replace(/^\w/, (c) => c.toUpperCase());
-  const percentChange =
-    ((currentTotal - previousMonth.amount) / previousMonth.amount) * 100;
+  const percentChange = ((currentTotal - previousMonth.amount) / previousMonth.amount) * 100;
 
   const categoryTotals = useMemo(() => {
     const totals: Partial<Record<CategoryKey, number>> = {};
@@ -98,9 +104,10 @@ export default function Insights() {
     })).filter((c) => c.amount > 0);
   }, [expenses]);
 
-  const topCategory = categoryTotals.reduce<
-    { key: CategoryKey; amount: number } | null
-  >((max, c) => (c.amount > (max?.amount ?? 0) ? c : max), null);
+  const topCategory = categoryTotals.reduce<{ key: CategoryKey; amount: number } | null>(
+    (max, c) => (c.amount > (max?.amount ?? 0) ? c : max),
+    null
+  );
   const maxCategoryAmount = Math.max(...categoryTotals.map((c) => c.amount), 1);
 
   const insightText =
@@ -122,7 +129,10 @@ export default function Insights() {
             {t.insights.subtitle.replace('{month}', currentMonthName)}
           </Text>
         </View>
-        <TouchableOpacity style={styles.calendarButton}>
+        <TouchableOpacity
+          style={styles.calendarButton}
+          onPress={() => showComingSoonAlert(t.common)}
+        >
           <CalendarIcon size={18} color={colors.darkGreen} />
         </TouchableOpacity>
       </View>
@@ -134,9 +144,7 @@ export default function Insights() {
       >
         <View style={styles.totalCard}>
           <Text style={styles.totalLabel}>{t.insights.totalLabel}</Text>
-          <Text style={styles.totalAmount}>
-            {formatCurrency(currentTotal, language)}
-          </Text>
+          <Text style={styles.totalAmount}>{formatCurrency(currentTotal, language)}</Text>
 
           <View style={styles.barsRow}>
             {months.map((m, idx) => (
@@ -146,20 +154,13 @@ export default function Insights() {
                     style={[
                       styles.bar,
                       {
-                        height: `${Math.max(
-                          8,
-                          (m.amount / maxMonthAmount) * 100
-                        )}%`,
+                        height: `${Math.max(8, (m.amount / maxMonthAmount) * 100)}%`,
                       },
                       m.active ? styles.barActive : styles.barInactive,
                     ]}
                   />
                 </View>
-                <Text
-                  style={[styles.barLabel, m.active && styles.barLabelActive]}
-                >
-                  {m.label}
-                </Text>
+                <Text style={[styles.barLabel, m.active && styles.barLabelActive]}>{m.label}</Text>
               </View>
             ))}
           </View>
@@ -176,17 +177,10 @@ export default function Insights() {
           {categoryTotals.map((c) => (
             <View key={c.key} style={styles.categoryRow}>
               <View style={styles.categoryHeaderRow}>
-                <View
-                  style={[
-                    styles.categoryDot,
-                    { backgroundColor: CATEGORY_COLORS[c.key] },
-                  ]}
-                />
+                <View style={[styles.categoryDot, { backgroundColor: CATEGORY_COLORS[c.key] }]} />
                 <Text style={styles.categoryName}>{t.categories[c.key]}</Text>
                 <View style={{ flex: 1 }} />
-                <Text style={styles.categoryAmount}>
-                  {formatCurrency(c.amount, language)}
-                </Text>
+                <Text style={styles.categoryAmount}>{formatCurrency(c.amount, language)}</Text>
               </View>
               <View style={styles.categoryTrack}>
                 <View

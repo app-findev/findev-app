@@ -1,18 +1,8 @@
 import { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-  Alert,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import DateTimePicker, {
-  type DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
+import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import {
   ChevronLeftIcon,
   CalendarIcon,
@@ -24,48 +14,27 @@ import {
 import { useLanguage } from '../i18n/LanguageContext';
 import { useExpenses } from '../context/ExpensesContext';
 import type { ExpenseTag } from '../data/mockExpenses';
-import { formatCurrency } from '../utils/format';
+import { formatCurrency, formatDate, formatAmountFromCents } from '../utils/format';
 import { colors } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditExpense'>;
 
-function formatDate(date: Date, locale: string): string {
-  return date
-    .toLocaleDateString(locale, {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    })
-    .replace(/^\w/, (c) => c.toUpperCase());
-}
-
-function formatAmountFromCents(cents: number, language: string): string {
-  const value = cents / 100;
-  return new Intl.NumberFormat(language === 'pt' ? 'pt-BR' : 'en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(value);
-}
-
 export default function EditExpense({ navigation, route }: Props) {
   const { t, language } = useLanguage();
   const { expenses, updateExpense, removeExpense } = useExpenses();
-  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
 
   const expense = expenses.find((e) => e.id === route.params.expenseId);
 
-  const [amountCents, setAmountCents] = useState(
-    Math.round((expense?.amount ?? 0) * 100)
-  );
-  const [description, setDescription] = useState(
-    expense?.title?.[language] ?? ''
-  );
+  const [amountCents, setAmountCents] = useState(Math.round((expense?.amount ?? 0) * 100));
+  const [description, setDescription] = useState(expense?.title?.[language] ?? '');
   const [dueDate, setDueDate] = useState(expense?.date ?? new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [type, setType] = useState<ExpenseTag>(expense?.tag ?? 'fixed');
   const [current, setCurrent] = useState(expense?.installment?.current ?? 1);
-  const [total] = useState(expense?.installment?.total ?? 2);
+  // Total installment count doesn't change while editing, so it's a plain
+  // constant rather than state.
+  const total = expense?.installment?.total ?? 2;
 
   if (!expense) {
     return (
@@ -82,10 +51,7 @@ export default function EditExpense({ navigation, route }: Props) {
     setAmountCents(digits === '' ? 0 : parseInt(digits, 10));
   };
 
-  const handleDateChange = (
-    _event: DateTimePickerEvent,
-    selectedDate?: Date
-  ) => {
+  const handleDateChange = (_event: DateTimePickerEvent, selectedDate?: Date) => {
     setShowDatePicker(Platform.OS === 'ios');
     if (selectedDate) setDueDate(selectedDate);
   };
@@ -109,30 +75,23 @@ export default function EditExpense({ navigation, route }: Props) {
   };
 
   const handleDelete = () => {
-    Alert.alert(
-      t.editExpense.deleteConfirmTitle,
-      t.editExpense.deleteConfirmMessage,
-      [
-        { text: t.editExpense.cancel, style: 'cancel' },
-        {
-          text: t.editExpense.delete,
-          style: 'destructive',
-          onPress: () => {
-            removeExpense(expense.id);
-            navigation.goBack();
-          },
+    Alert.alert(t.editExpense.deleteConfirmTitle, t.editExpense.deleteConfirmMessage, [
+      { text: t.editExpense.cancel, style: 'cancel' },
+      {
+        text: t.editExpense.delete,
+        style: 'destructive',
+        onPress: () => {
+          removeExpense(expense.id);
+          navigation.goBack();
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.topRow}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <ChevronLeftIcon size={18} color={colors.darkGreen} />
         </TouchableOpacity>
         <Text style={styles.title}>{t.editExpense.title}</Text>
@@ -142,9 +101,7 @@ export default function EditExpense({ navigation, route }: Props) {
       <View style={styles.amountBlock}>
         <Text style={styles.amountLabel}>{t.addExpense.amountLabel}</Text>
         <View style={styles.amountRow}>
-          <Text style={styles.amountSign}>
-            {language === 'pt' ? 'R$' : '$'}
-          </Text>
+          <Text style={styles.amountSign}>{language === 'pt' ? 'R$' : '$'}</Text>
           <TextInput
             style={styles.amountInput}
             value={formatAmountFromCents(amountCents, language)}
@@ -156,20 +113,13 @@ export default function EditExpense({ navigation, route }: Props) {
 
       <View style={styles.fieldGroup}>
         <Text style={styles.label}>{t.addExpense.description}</Text>
-        <TextInput
-          style={styles.input}
-          value={description}
-          onChangeText={setDescription}
-        />
+        <TextInput style={styles.input} value={description} onChangeText={setDescription} />
       </View>
 
       <View style={styles.fieldGroup}>
         <Text style={styles.label}>{t.addExpense.dueDate}</Text>
-        <TouchableOpacity
-          style={styles.dateField}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text style={styles.dateText}>{formatDate(dueDate, locale)}</Text>
+        <TouchableOpacity style={styles.dateField} onPress={() => setShowDatePicker(true)}>
+          <Text style={styles.dateText}>{formatDate(dueDate, language)}</Text>
           <CalendarIcon size={18} color={colors.darkGreen} />
         </TouchableOpacity>
         {showDatePicker && (
@@ -197,27 +147,17 @@ export default function EditExpense({ navigation, route }: Props) {
             <View
               style={[
                 styles.typeIconBox,
-                type === 'fixed'
-                  ? styles.typeIconBoxActive
-                  : styles.typeIconBoxInactive,
+                type === 'fixed' ? styles.typeIconBoxActive : styles.typeIconBoxInactive,
               ]}
             >
-              <RepeatIcon
-                size={16}
-                color={type === 'fixed' ? '#ffffff' : colors.darkGreen}
-              />
+              <RepeatIcon size={16} color={type === 'fixed' ? '#ffffff' : colors.darkGreen} />
             </View>
             <Text style={styles.typeLabel}>{t.addExpense.fixed}</Text>
-            <Text style={styles.typeSubtitle}>
-              {t.addExpense.fixedSubtitle}
-            </Text>
+            <Text style={styles.typeSubtitle}>{t.addExpense.fixedSubtitle}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[
-              styles.typeCard,
-              type === 'installment' && styles.typeCardActive,
-            ]}
+            style={[styles.typeCard, type === 'installment' && styles.typeCardActive]}
             onPress={() => setType('installment')}
           >
             {type === 'installment' && (
@@ -228,28 +168,19 @@ export default function EditExpense({ navigation, route }: Props) {
             <View
               style={[
                 styles.typeIconBox,
-                type === 'installment'
-                  ? styles.typeIconBoxActive
-                  : styles.typeIconBoxInactive,
+                type === 'installment' ? styles.typeIconBoxActive : styles.typeIconBoxInactive,
               ]}
             >
-              <LayersIcon
-                size={16}
-                color={type === 'installment' ? '#ffffff' : colors.darkGreen}
-              />
+              <LayersIcon size={16} color={type === 'installment' ? '#ffffff' : colors.darkGreen} />
             </View>
             <Text style={styles.typeLabel}>{t.addExpense.installment}</Text>
-            <Text style={styles.typeSubtitle}>
-              {t.addExpense.installmentSubtitle}
-            </Text>
+            <Text style={styles.typeSubtitle}>{t.addExpense.installmentSubtitle}</Text>
           </TouchableOpacity>
         </View>
 
         {type === 'installment' && (
           <View style={styles.stepperRow}>
-            <Text style={styles.stepperLabel}>
-              {t.editExpense.currentInstallment}
-            </Text>
+            <Text style={styles.stepperLabel}>{t.editExpense.currentInstallment}</Text>
             <View style={styles.stepper}>
               <TouchableOpacity
                 style={styles.stepperButton}
@@ -290,14 +221,12 @@ export default function EditExpense({ navigation, route }: Props) {
         disabled={!canSave}
         onPress={handleSave}
       >
-        <Text style={styles.buttonText}>{t.editExpense.saveButton}  →</Text>
+        <Text style={styles.buttonText}>{t.editExpense.saveButton} →</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
         <TrashIcon size={16} color={colors.darkGreen} />
-        <Text style={styles.deleteButtonText}>
-          {t.editExpense.deleteButton}
-        </Text>
+        <Text style={styles.deleteButtonText}>{t.editExpense.deleteButton}</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

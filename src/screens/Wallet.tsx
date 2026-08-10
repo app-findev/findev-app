@@ -5,12 +5,10 @@ import type { Language } from '../i18n/translations';
 import { BankCardIcon, PiggyBankIcon } from '../components/icons';
 import { accounts, cards, getNetWorth } from '../data/wallet';
 import { formatCurrency } from '../utils/format';
+import { showComingSoonAlert } from '../utils/comingSoon';
 import { colors } from '../theme';
 
-function resolveText(
-  value: string | { en: string; pt: string },
-  language: Language
-): string {
+function resolveText(value: string | { en: string; pt: string }, language: Language): string {
   return typeof value === 'string' ? value : value[language];
 }
 
@@ -25,7 +23,7 @@ export default function Wallet() {
           <Text style={styles.title}>{t.wallet.title}</Text>
           <Text style={styles.subtitle}>{t.wallet.subtitle}</Text>
         </View>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => showComingSoonAlert(t.common)}>
           <BankCardIcon size={18} color={colors.darkGreen} />
         </TouchableOpacity>
       </View>
@@ -37,9 +35,7 @@ export default function Wallet() {
       >
         <View style={styles.netWorthCard}>
           <Text style={styles.netWorthLabel}>{t.wallet.netWorth}</Text>
-          <Text style={styles.netWorthAmount}>
-            {formatCurrency(netWorth, language)}
-          </Text>
+          <Text style={styles.netWorthAmount}>{formatCurrency(netWorth, language)}</Text>
         </View>
 
         <Text style={styles.sectionTitle}>{t.wallet.accounts}</Text>
@@ -54,16 +50,10 @@ export default function Wallet() {
                 )}
               </View>
               <View style={styles.rowMain}>
-                <Text style={styles.rowTitle}>
-                  {resolveText(account.name, language)}
-                </Text>
-                <Text style={styles.rowSubtitle}>
-                  {resolveText(account.subtitle, language)}
-                </Text>
+                <Text style={styles.rowTitle}>{resolveText(account.name, language)}</Text>
+                <Text style={styles.rowSubtitle}>{resolveText(account.subtitle, language)}</Text>
               </View>
-              <Text style={styles.rowAmount}>
-                {formatCurrency(account.balance, language)}
-              </Text>
+              <Text style={styles.rowAmount}>{formatCurrency(account.balance, language)}</Text>
             </View>
           ))}
         </View>
@@ -71,9 +61,7 @@ export default function Wallet() {
         <Text style={styles.sectionTitle}>{t.wallet.cards}</Text>
         <View style={styles.list}>
           {cards.map((card) => {
-            const usedPercent = Math.round(
-              (card.currentInvoice / card.limit) * 100
-            );
+            const usedPercent = Math.round((card.currentInvoice / card.limit) * 100);
             return (
               <View key={card.id}>
                 <View style={styles.row}>
@@ -81,12 +69,8 @@ export default function Wallet() {
                     <BankCardIcon size={18} color={colors.darkGreen} />
                   </View>
                   <View style={styles.rowMain}>
-                    <Text style={styles.rowTitle}>
-                      {resolveText(card.name, language)}
-                    </Text>
-                    <Text style={styles.rowSubtitle}>
-                      {resolveText(card.subtitle, language)}
-                    </Text>
+                    <Text style={styles.rowTitle}>{resolveText(card.name, language)}</Text>
+                    <Text style={styles.rowSubtitle}>{resolveText(card.subtitle, language)}</Text>
                   </View>
                   <Text style={styles.rowAmount}>
                     {usedPercent}% {t.wallet.used}
@@ -95,9 +79,7 @@ export default function Wallet() {
 
                 <View style={styles.invoiceBox}>
                   <View style={styles.invoiceRow}>
-                    <Text style={styles.invoiceLabel}>
-                      {t.wallet.invoiceLabel}
-                    </Text>
+                    <Text style={styles.invoiceLabel}>{t.wallet.invoiceLabel}</Text>
                     <Text style={styles.invoiceAmount}>
                       {formatCurrency(card.currentInvoice, language)} /{' '}
                       {formatCurrency(card.limit, language)}
@@ -105,10 +87,7 @@ export default function Wallet() {
                   </View>
                   <View style={styles.invoiceTrack}>
                     <View
-                      style={[
-                        styles.invoiceFill,
-                        { width: `${Math.min(100, usedPercent)}%` },
-                      ]}
+                      style={[styles.invoiceFill, { width: `${Math.min(100, usedPercent)}%` }]}
                     />
                   </View>
                 </View>

@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { ReactNode } from 'react';
 import type { CompositeScreenProps } from '@react-navigation/native';
@@ -28,6 +21,8 @@ import {
   ChevronRightIcon,
   GlobeIcon,
 } from '../components/icons';
+import { getLocale } from '../utils/format';
+import { showComingSoonAlert } from '../utils/comingSoon';
 import { colors } from '../theme';
 import type { MainTabsParamList, RootStackParamList } from '../navigation/types';
 
@@ -51,17 +46,8 @@ function MenuRow({
 }) {
   return (
     <TouchableOpacity style={styles.menuRow} onPress={onPress}>
-      <View
-        style={[
-          styles.menuIconBox,
-          destructive && styles.menuIconBoxDestructive,
-        ]}
-      >
-        {icon}
-      </View>
-      <Text style={[styles.menuLabel, destructive && styles.menuLabelDestructive]}>
-        {label}
-      </Text>
+      <View style={[styles.menuIconBox, destructive && styles.menuIconBoxDestructive]}>{icon}</View>
+      <Text style={[styles.menuLabel, destructive && styles.menuLabelDestructive]}>{label}</Text>
       <View style={{ flex: 1 }} />
       {!destructive && <ChevronRightIcon size={16} color={colors.mutedLight} />}
     </TouchableOpacity>
@@ -70,42 +56,34 @@ function MenuRow({
 
 export default function Profile({ navigation }: Props) {
   const { t, language } = useLanguage();
-  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
+  const locale = getLocale(language);
 
   const monthName = MEMBER_SINCE.toLocaleDateString(locale, {
     month: 'long',
     year: 'numeric',
   }).replace(/^\w/, (c) => c.toUpperCase());
 
-  const showComingSoon = () => {
-    Alert.alert(t.profile.comingSoonTitle, t.profile.comingSoonMessage, [
-      { text: t.profile.ok },
-    ]);
-  };
+  const showComingSoon = () => showComingSoonAlert(t.common);
 
   const handleLogout = () => {
-    Alert.alert(
-      t.profile.logoutConfirmTitle,
-      t.profile.logoutConfirmMessage,
-      [
-        { text: t.profile.cancel, style: 'cancel' },
-        {
-          text: t.profile.logout,
-          style: 'destructive',
-          onPress: () =>
-            navigation
-              .getParent<NativeStackNavigationProp<RootStackParamList>>()
-              ?.reset({ index: 0, routes: [{ name: 'Welcome' }] }),
-        },
-      ]
-    );
+    Alert.alert(t.profile.logoutConfirmTitle, t.profile.logoutConfirmMessage, [
+      { text: t.profile.cancel, style: 'cancel' },
+      {
+        text: t.profile.logout,
+        style: 'destructive',
+        onPress: () =>
+          navigation
+            .getParent<NativeStackNavigationProp<RootStackParamList>>()
+            ?.reset({ index: 0, routes: [{ name: 'Welcome' }] }),
+      },
+    ]);
   };
 
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.headerRow}>
         <Text style={styles.title}>{t.profile.title}</Text>
-        <TouchableOpacity style={styles.menuButton}>
+        <TouchableOpacity style={styles.menuButton} onPress={showComingSoon}>
           <MenuIcon size={18} color={colors.darkGreen} />
         </TouchableOpacity>
       </View>
@@ -123,10 +101,7 @@ export default function Profile({ navigation }: Props) {
           <Text style={styles.email}>alex@example.com</Text>
         </View>
 
-        <TouchableOpacity
-          style={styles.memberBox}
-          onPress={() => navigation.navigate('Paywall')}
-        >
+        <TouchableOpacity style={styles.memberBox} onPress={() => navigation.navigate('Paywall')}>
           <TrendIcon size={16} color={colors.darkGreen} />
           <Text style={styles.memberText}>
             {t.profile.memberSince

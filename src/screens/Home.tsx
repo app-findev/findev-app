@@ -1,11 +1,5 @@
 import { useMemo, useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -30,7 +24,8 @@ import {
   type Expense,
   type ExpenseTag,
 } from '../data/mockExpenses';
-import { formatCurrency } from '../utils/format';
+import { formatCurrency, getLocale, splitCurrency } from '../utils/format';
+import { showComingSoonAlert } from '../utils/comingSoon';
 import { colors } from '../theme';
 import type { MainTabsParamList, RootStackParamList } from '../navigation/types';
 
@@ -51,11 +46,9 @@ function ExpenseRow({
   onPress: () => void;
 }) {
   const { t } = useLanguage();
-  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
+  const locale = getLocale(language);
   const day = expense.date.getDate().toString().padStart(2, '0');
-  const weekday = expense.date
-    .toLocaleDateString(locale, { weekday: 'short' })
-    .replace('.', '');
+  const weekday = expense.date.toLocaleDateString(locale, { weekday: 'short' }).replace('.', '');
   const isPaid = expense.status === 'paid';
   const tagLabel =
     expense.tag === 'installment' && expense.installment
@@ -99,11 +92,10 @@ export default function Home({ navigation }: Props) {
   const [filter, setFilter] = useState<'all' | ExpenseTag>('all');
   const [monthOffset, setMonthOffset] = useState(0);
 
-  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
+  const locale = getLocale(language);
   const monthDate = useMemo(() => {
-    const d = new Date(2026, 5, 1);
-    d.setMonth(d.getMonth() + monthOffset);
-    return d;
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth() + monthOffset, 1);
   }, [monthOffset]);
   const monthLabel = monthDate
     .toLocaleDateString(locale, { month: 'long', year: 'numeric' })
@@ -120,6 +112,8 @@ export default function Home({ navigation }: Props) {
     return e.tag === filter;
   });
 
+  const goalParts = splitCurrency(monthlyGoal, language);
+
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.headerRow}>
@@ -127,12 +121,13 @@ export default function Home({ navigation }: Props) {
           <Text style={styles.avatarText}>A</Text>
         </View>
         <View style={styles.headerText}>
-          <Text style={styles.greeting}>
-            {t.home.greeting.replace('{name}', 'Alex')}
-          </Text>
+          <Text style={styles.greeting}>{t.home.greeting.replace('{name}', 'Alex')}</Text>
           <Text style={styles.headerSubtitle}>{t.home.subtitle}</Text>
         </View>
-        <TouchableOpacity style={styles.calendarButton}>
+        <TouchableOpacity
+          style={styles.calendarButton}
+          onPress={() => showComingSoonAlert(t.common)}
+        >
           <CalendarIcon size={18} color={colors.darkGreen} />
         </TouchableOpacity>
       </View>
@@ -165,12 +160,8 @@ export default function Home({ navigation }: Props) {
           </View>
 
           <View style={styles.goalAmountRow}>
-            <Text style={styles.goalSign}>
-              {formatCurrency(monthlyGoal, language).replace(/[\d.,]+/g, '')}
-            </Text>
-            <Text style={styles.goalAmount}>
-              {formatCurrency(monthlyGoal, language).replace(/^\D+/, '')}
-            </Text>
+            <Text style={styles.goalSign}>{goalParts.symbol}</Text>
+            <Text style={styles.goalAmount}>{goalParts.amount}</Text>
           </View>
 
           <View style={styles.progressTrack}>
@@ -182,8 +173,7 @@ export default function Home({ navigation }: Props) {
               {formatCurrency(spent, language)} {t.home.spent}
             </Text>
             <Text style={styles.goalFooterText}>
-              {formatCurrency(Math.max(0, untilGoal), language)}{' '}
-              {t.home.untilGoal}
+              {formatCurrency(Math.max(0, untilGoal), language)} {t.home.untilGoal}
             </Text>
           </View>
         </View>
@@ -192,15 +182,9 @@ export default function Home({ navigation }: Props) {
           <View style={styles.alertBox}>
             <WarningIcon size={18} color={colors.darkGreen} />
             <Text style={styles.alertText}>
-              {t.home.pendingAlert.replace(
-                '{amount}',
-                formatCurrency(pending, language)
-              )}{' '}
+              {t.home.pendingAlert.replace('{amount}', formatCurrency(pending, language))}{' '}
               <Text style={styles.alertBold}>
-                {t.home.pendingAlertOver.replace(
-                  '{amount}',
-                  formatCurrency(overage, language)
-                )}
+                {t.home.pendingAlertOver.replace('{amount}', formatCurrency(overage, language))}
               </Text>
             </Text>
           </View>
@@ -221,14 +205,7 @@ export default function Home({ navigation }: Props) {
                 style={[styles.filterPill, active && styles.filterPillActive]}
                 onPress={() => setFilter(f)}
               >
-                <Text
-                  style={[
-                    styles.filterText,
-                    active && styles.filterTextActive,
-                  ]}
-                >
-                  {label}
-                </Text>
+                <Text style={[styles.filterText, active && styles.filterTextActive]}>{label}</Text>
               </TouchableOpacity>
             );
           })}
@@ -240,18 +217,13 @@ export default function Home({ navigation }: Props) {
               key={expense.id}
               expense={expense}
               language={language}
-              onPress={() =>
-                navigation.navigate('EditExpense', { expenseId: expense.id })
-              }
+              onPress={() => navigation.navigate('EditExpense', { expenseId: expense.id })}
             />
           ))}
         </View>
       </ScrollView>
 
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate('AddExpense')}
-      >
+      <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('AddExpense')}>
         <PlusIcon size={26} color={colors.darkGreen} />
       </TouchableOpacity>
     </SafeAreaView>

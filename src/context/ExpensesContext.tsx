@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
 import { mockExpenses, type Expense } from '../data/mockExpenses';
 
 type ExpensesContextValue = {
@@ -16,6 +10,15 @@ type ExpensesContextValue = {
 
 const ExpensesContext = createContext<ExpensesContextValue | null>(null);
 
+// Timestamp plus a per-provider counter, so two expenses added within the
+// same millisecond still get distinct ids.
+let expenseIdSequence = 0;
+
+function createExpenseId(): string {
+  expenseIdSequence += 1;
+  return `${Date.now()}-${expenseIdSequence}`;
+}
+
 export function ExpensesProvider({ children }: { children: ReactNode }) {
   const [expenses, setExpenses] = useState<Expense[]>(mockExpenses);
 
@@ -23,25 +26,15 @@ export function ExpensesProvider({ children }: { children: ReactNode }) {
     () => ({
       expenses,
       addExpense: (expense) =>
-        setExpenses((prev) => [
-          { ...expense, id: String(Date.now()) },
-          ...prev,
-        ]),
+        setExpenses((prev) => [{ ...expense, id: createExpenseId() }, ...prev]),
       updateExpense: (id, updates) =>
-        setExpenses((prev) =>
-          prev.map((e) => (e.id === id ? { ...e, ...updates } : e))
-        ),
-      removeExpense: (id) =>
-        setExpenses((prev) => prev.filter((e) => e.id !== id)),
+        setExpenses((prev) => prev.map((e) => (e.id === id ? { ...e, ...updates } : e))),
+      removeExpense: (id) => setExpenses((prev) => prev.filter((e) => e.id !== id)),
     }),
     [expenses]
   );
 
-  return (
-    <ExpensesContext.Provider value={value}>
-      {children}
-    </ExpensesContext.Provider>
-  );
+  return <ExpensesContext.Provider value={value}>{children}</ExpensesContext.Provider>;
 }
 
 export function useExpenses() {

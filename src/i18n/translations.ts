@@ -1,12 +1,16 @@
 export const translations = {
   en: {
+    common: {
+      comingSoonTitle: 'Coming soon',
+      comingSoonMessage: "This feature isn't available yet.",
+      ok: 'OK',
+    },
     welcome: {
       heroLabel: 'hero illustration',
       headingLine1: 'Spend a little,',
       headingLine2: 'save a',
       highlight: 'lot',
-      subtitle:
-        'Track every dollar, hit your goals, and feel good about your money.',
+      subtitle: 'Track every dollar, hit your goals, and feel good about your money.',
       getStarted: 'Get started',
       haveAccount: 'Already have an account?',
       login: 'Log in',
@@ -105,7 +109,7 @@ export const translations = {
       installmentSubtitle: 'Split into payments',
       installmentsLabel: 'Number of installments',
       fixedInfo:
-        'It will repeat automatically every day {day}, until you cancel it.',
+        "Marked as a fixed expense due on day {day} each month. You'll need to add it again next month.",
       installmentInfo: 'It will be split into {count}x, once a month.',
       addButton: 'Add expense',
     },
@@ -113,8 +117,7 @@ export const translations = {
       title: 'Edit expense',
       currentInstallment: 'Current installment',
       of: 'of',
-      remainingInfo:
-        '{remaining} installments of {amount} left → {total} remaining in total.',
+      remainingInfo: '{remaining} installments of {amount} left → {total} remaining in total.',
       saveButton: 'Save changes',
       deleteButton: 'Delete expense',
       deleteConfirmTitle: 'Delete expense?',
@@ -157,19 +160,14 @@ export const translations = {
       helpSupport: 'Help & support',
       language: 'Language',
       logout: 'Log out',
-      comingSoonTitle: 'Coming soon',
-      comingSoonMessage: "This feature isn't available yet.",
-      ok: 'OK',
       logoutConfirmTitle: 'Log out?',
-      logoutConfirmMessage:
-        "You'll need to log in again to access your account.",
+      logoutConfirmMessage: "You'll need to log in again to access your account.",
       cancel: 'Cancel',
     },
     paywall: {
       heading1: 'Unlock',
       heading2: 'SpentLittle Plus',
-      subtitle:
-        'Unlimited insights, multiple goals, and more control over your money.',
+      subtitle: 'Unlimited insights, multiple goals, and more control over your money.',
       saveBadge: 'SAVE 50%',
       annual: 'Annual',
       monthly: 'Monthly',
@@ -188,13 +186,17 @@ export const translations = {
     },
   },
   pt: {
+    common: {
+      comingSoonTitle: 'Em breve',
+      comingSoonMessage: 'Essa funcionalidade ainda não está disponível.',
+      ok: 'OK',
+    },
     welcome: {
       heroLabel: 'ilustração',
       headingLine1: 'Gaste pouco,',
       headingLine2: 'economize',
       highlight: 'muito',
-      subtitle:
-        'Acompanhe cada centavo, alcance suas metas e sinta-se bem com seu dinheiro.',
+      subtitle: 'Acompanhe cada centavo, alcance suas metas e sinta-se bem com seu dinheiro.',
       getStarted: 'Começar',
       haveAccount: 'Já tem uma conta?',
       login: 'Entrar',
@@ -293,7 +295,7 @@ export const translations = {
       installmentSubtitle: 'Dividido em vezes',
       installmentsLabel: 'Número de parcelas',
       fixedInfo:
-        'Vai se repetir todo dia {day}, automaticamente, até você cancelar.',
+        'Marcada como despesa fixa com vencimento no dia {day} de cada mês. Você vai precisar adicioná-la novamente no mês seguinte.',
       installmentInfo: 'Vai ser dividida em {count}x, uma vez por mês.',
       addButton: 'Adicionar despesa',
     },
@@ -301,8 +303,7 @@ export const translations = {
       title: 'Editar despesa',
       currentInstallment: 'Parcela atual',
       of: 'de',
-      remainingInfo:
-        'Faltam {remaining} parcelas de {amount} → total restante de {total}.',
+      remainingInfo: 'Faltam {remaining} parcelas de {amount} → total restante de {total}.',
       saveButton: 'Salvar alterações',
       deleteButton: 'Excluir despesa',
       deleteConfirmTitle: 'Excluir despesa?',
@@ -314,8 +315,7 @@ export const translations = {
       title: 'Insights',
       subtitle: 'Seus gastos em {month}',
       totalLabel: 'Total gasto no mês',
-      increaseInsight:
-        '{percent}% a mais do que em {month} — puxado por {category}.',
+      increaseInsight: '{percent}% a mais do que em {month} — puxado por {category}.',
       decreaseInsight: '{percent}% a menos do que em {month}.',
       byCategory: 'Por categoria',
     },
@@ -346,19 +346,14 @@ export const translations = {
       helpSupport: 'Ajuda e suporte',
       language: 'Idioma',
       logout: 'Sair da conta',
-      comingSoonTitle: 'Em breve',
-      comingSoonMessage: 'Essa funcionalidade ainda não está disponível.',
-      ok: 'OK',
       logoutConfirmTitle: 'Sair da conta?',
-      logoutConfirmMessage:
-        'Você vai precisar entrar de novo pra acessar sua conta.',
+      logoutConfirmMessage: 'Você vai precisar entrar de novo pra acessar sua conta.',
       cancel: 'Cancelar',
     },
     paywall: {
       heading1: 'Desbloqueie o',
       heading2: 'SpentLittle Plus',
-      subtitle:
-        'Insights ilimitados, metas múltiplas e mais controle sobre seu dinheiro.',
+      subtitle: 'Insights ilimitados, metas múltiplas e mais controle sobre seu dinheiro.',
       saveBadge: 'ECONOMIZE 50%',
       annual: 'Anual',
       monthly: 'Mensal',
