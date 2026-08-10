@@ -2,41 +2,30 @@
 
 > Spend a little, save a lot.
 
-FinDev is a personal finance mobile app built with **Expo** and **React Native**. It walks a new user through a short onboarding flow and then drops them into a home screen where they can track monthly expenses against a spending goal, log new expenses (fixed or in installments), see spending insights by category, and check accounts and cards balances — all in **Portuguese and English**, switchable at any time.
+FinDev is a personal finance app. This repository is a **pnpm monorepo**:
+today it holds the mobile app, with a TypeScript backend planned as a
+second package down the line.
 
-## About
+## Structure
 
-FinDev (in-app brand name: **SpentLittle**) is a personal finance app that helps you spend a little and save a lot. It tracks your monthly expenses against a spending goal, lets you log new expenses (fixed or in installments), shows spending insights by category, and brings your accounts and cards together in one wallet view.
-
-## Features
-
-- **4-step onboarding**: account creation, name, financial goals, and monthly budget setup
-- **Login** with email and password
-- **Home**: monthly goal card with progress bar, an alert when pending bills would exceed the goal, filters (All / Fixed / Installments), and the expense list
-- **Add expense / Edit expense**: amount, description, due date (native picker), type (fixed or installment), and delete
-- **Insights**: total spent this month, comparison with the previous month, a 4-month bar chart, and a category breakdown (Housing, Subscriptions, Transport, Leisure, Other)
-- **Wallet**: total net worth, accounts (checking/savings), and credit cards with current invoice and limit
-- **Profile**: user info, current plan, language switcher (PT/EN), and logout
-- **Bilingual**: the entire app works in Portuguese and English, with a language toggle available on every screen
-
-## Tech stack
-
-- [Expo](https://expo.dev/) (SDK 57) + React Native
-- TypeScript
-- [React Navigation](https://reactnavigation.org/) (native stack + bottom tabs)
-- Context API for shared state (language, expenses)
-- `react-native-svg`, `@react-native-community/datetimepicker`, `@react-native-community/slider`
+```
+apps/
+  mobile/   Expo + React Native app (see apps/mobile/README.md)
+packages/    (reserved for code shared between apps — empty for now)
+```
 
 ## Getting started
 
-Requires **Node.js 20.19+**.
+Requires **Node.js 20.19+** and **pnpm** ([Corepack](https://nodejs.org/api/corepack.html) is recommended: run `corepack enable` once).
 
 ```bash
-npm install
-npx expo start
+pnpm install
+pnpm start
 ```
 
-Scan the QR code with the **Expo Go** app on your phone, or press `w` to open it in a browser.
+This proxies to the mobile app (`apps/mobile`). See
+[`apps/mobile/README.md`](apps/mobile/README.md) for app-specific details
+(features, tech stack, running on a specific platform).
 
 ## License
 
