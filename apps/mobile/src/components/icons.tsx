@@ -38,12 +38,7 @@ export function BellIcon({ size = 18, color = '#173308' }: IconProps) {
         strokeWidth={1.8}
         strokeLinejoin="round"
       />
-      <Path
-        d="M10 18a2 2 0 0 0 4 0"
-        stroke={color}
-        strokeWidth={1.8}
-        strokeLinecap="round"
-      />
+      <Path d="M10 18a2 2 0 0 0 4 0" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
     </Svg>
   );
 }
@@ -124,8 +119,24 @@ export function TrashIcon({ size = 18, color = '#173308' }: IconProps) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <Line x1="10" y1="11" x2="10" y2="17" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
-      <Line x1="14" y1="11" x2="14" y2="17" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
+      <Line
+        x1="10"
+        y1="11"
+        x2="10"
+        y2="17"
+        stroke={color}
+        strokeWidth={1.8}
+        strokeLinecap="round"
+      />
+      <Line
+        x1="14"
+        y1="11"
+        x2="14"
+        y2="17"
+        stroke={color}
+        strokeWidth={1.8}
+        strokeLinecap="round"
+      />
     </Svg>
   );
 }
@@ -156,12 +167,7 @@ export function PiggyBankIcon({ size = 18, color = '#173308' }: IconProps) {
 export function CloseIcon({ size = 20, color = '#173308' }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path
-        d="M6 6l12 12M18 6 6 18"
-        stroke={color}
-        strokeWidth={2.2}
-        strokeLinecap="round"
-      />
+      <Path d="M6 6l12 12M18 6 6 18" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
     </Svg>
   );
 }
@@ -221,15 +227,7 @@ export function TargetIcon({ size = 16, color = '#ffffff' }: IconProps) {
 export function CalendarIcon({ size = 18, color = '#173308' }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Rect
-        x="3"
-        y="5"
-        width="18"
-        height="16"
-        rx="2.5"
-        stroke={color}
-        strokeWidth={1.8}
-      />
+      <Rect x="3" y="5" width="18" height="16" rx="2.5" stroke={color} strokeWidth={1.8} />
       <Line x1="3" y1="10" x2="21" y2="10" stroke={color} strokeWidth={1.8} />
       <Line x1="8" y1="3" x2="8" y2="7" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
       <Line x1="16" y1="3" x2="16" y2="7" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
@@ -246,7 +244,15 @@ export function WarningIcon({ size = 18, color = '#173308' }: IconProps) {
         strokeWidth={1.8}
         strokeLinejoin="round"
       />
-      <Line x1="12" y1="9.5" x2="12" y2="14" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
+      <Line
+        x1="12"
+        y1="9.5"
+        x2="12"
+        y2="14"
+        stroke={color}
+        strokeWidth={1.8}
+        strokeLinecap="round"
+      />
       <Circle cx="12" cy="16.8" r="1" fill={color} />
     </Svg>
   );
@@ -284,12 +290,7 @@ export function RepeatIcon({ size = 12, color = '#173308' }: IconProps) {
 export function LayersIcon({ size = 12, color = '#173308' }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path
-        d="m12 3 9 5-9 5-9-5 9-5Z"
-        stroke={color}
-        strokeWidth={1.8}
-        strokeLinejoin="round"
-      />
+      <Path d="m12 3 9 5-9 5-9-5 9-5Z" stroke={color} strokeWidth={1.8} strokeLinejoin="round" />
       <Path
         d="m3 13 9 5 9-5"
         stroke={color}
@@ -327,7 +328,15 @@ export function InsightsTabIcon({ size = 22, color = '#173308' }: IconProps) {
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Line x1="5" y1="20" x2="5" y2="12" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
       <Line x1="12" y1="20" x2="12" y2="6" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
-      <Line x1="19" y1="20" x2="19" y2="14" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
+      <Line
+        x1="19"
+        y1="20"
+        x2="19"
+        y2="14"
+        stroke={color}
+        strokeWidth={2.2}
+        strokeLinecap="round"
+      />
     </Svg>
   );
 }

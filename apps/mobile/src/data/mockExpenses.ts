@@ -75,13 +75,9 @@ export const mockExpenses: Expense[] = [
 ];
 
 export function getSpentTotal(expenses: Expense[]): number {
-  return expenses
-    .filter((e) => e.status === 'paid')
-    .reduce((sum, e) => sum + e.amount, 0);
+  return expenses.filter((e) => e.status === 'paid').reduce((sum, e) => sum + e.amount, 0);
 }
 
 export function getPendingTotal(expenses: Expense[]): number {
-  return expenses
-    .filter((e) => e.status === 'pending')
-    .reduce((sum, e) => sum + e.amount, 0);
+  return expenses.filter((e) => e.status === 'pending').reduce((sum, e) => sum + e.amount, 0);
 }
