@@ -19,26 +19,19 @@ export function formatCurrency(value: number, language: Language): string {
  * Splits a formatted currency value into its currency symbol (including a
  * leading minus sign, when present) and its numeric amount, so the two can
  * be styled independently without losing the sign of negative values.
+ *
+ * Built on `.format()` rather than `.formatToParts()` — Hermes (the RN JS
+ * engine) doesn't implement `formatToParts` on all platforms, so relying on
+ * it crashes at runtime even though it type-checks fine.
  */
 export function splitCurrency(
   value: number,
   language: Language
 ): { symbol: string; amount: string } {
-  const parts = new Intl.NumberFormat(getLocale(language), {
-    style: 'currency',
-    currency: getCurrencyCode(language),
-  }).formatToParts(value);
-
-  let symbol = '';
-  let amount = '';
-  for (const part of parts) {
-    if (part.type === 'currency' || part.type === 'minusSign' || part.type === 'literal') {
-      symbol += part.value;
-    } else {
-      amount += part.value;
-    }
-  }
-  return { symbol, amount };
+  const formatted = formatCurrency(Math.abs(value), language);
+  const amount = formatted.replace(/^\D+/, '');
+  const symbol = formatted.slice(0, formatted.length - amount.length);
+  return { symbol: (value < 0 ? '-' : '') + symbol, amount };
 }
 
 export function formatDate(date: Date, language: Language): string {
