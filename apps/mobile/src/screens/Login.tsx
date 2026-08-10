@@ -90,9 +90,7 @@ export default function Login({ navigation }: Props) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>
-          navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] })
-        }
+        onPress={() => navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] })}
       >
         <Text style={styles.buttonText}>{t.login.login} →</Text>
       </TouchableOpacity>

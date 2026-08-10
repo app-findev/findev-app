@@ -1,9 +1,4 @@
-export type CategoryKey =
-  | 'housing'
-  | 'subscriptions'
-  | 'transport'
-  | 'leisure'
-  | 'other';
+export type CategoryKey = 'housing' | 'subscriptions' | 'transport' | 'leisure' | 'other';
 
 export const CATEGORY_COLORS: Record<CategoryKey, string> = {
   housing: '#173308',

@@ -17,18 +17,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     () => ({
       language,
       setLanguage,
-      toggleLanguage: () =>
-        setLanguage((prev) => (prev === 'pt' ? 'en' : 'pt')),
+      toggleLanguage: () => setLanguage((prev) => (prev === 'pt' ? 'en' : 'pt')),
       t: translations[language],
     }),
     [language]
   );
 
-  return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
-  );
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
 export function useLanguage() {

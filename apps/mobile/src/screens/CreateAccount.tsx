@@ -140,10 +140,9 @@ export default function CreateAccount({ navigation }: Props) {
       </TouchableOpacity>
 
       <Text style={styles.footer}>
-        {t.createAccount.agreement}{' '}
-        <Text style={styles.footerLink}>{t.createAccount.terms}</Text>{' '}
-        {t.createAccount.and}{' '}
-        <Text style={styles.footerLink}>{t.createAccount.privacyPolicy}</Text>.
+        {t.createAccount.agreement} <Text style={styles.footerLink}>{t.createAccount.terms}</Text>{' '}
+        {t.createAccount.and} <Text style={styles.footerLink}>{t.createAccount.privacyPolicy}</Text>
+        .
       </Text>
     </SafeAreaView>
   );

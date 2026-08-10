@@ -133,13 +133,7 @@ function ClockIcon({ color }: IconProps) {
   );
 }
 
-type GoalId =
-  | 'savings'
-  | 'debt'
-  | 'spending'
-  | 'investing'
-  | 'subscriptions'
-  | 'budget';
+type GoalId = 'savings' | 'debt' | 'spending' | 'investing' | 'subscriptions' | 'budget';
 
 type Goal = {
   id: GoalId;
